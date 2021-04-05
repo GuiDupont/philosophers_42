@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Philosophers_42
+NAME = philosophers_42
 
 CC = gcc
 
@@ -18,29 +18,20 @@ FLAGS = -Wall -Wextra -Werror
 
 PATH_SRCS = srcs
 
-SRCS_LIST = Philosophers_42.c
+SRCS_LIST = philosophers_42.c tools.c
 					
 SRCS = $(addprefix ${PATH_SRCS}/, ${SRCS_LIST})
 
-ifeq ($(f), f)
-    CFLAGS += -fsanitize=address -g3
-endif
-
 OBJS = $(SRCS:.c=.o)
 
-INCLUDES = -I./includes
-
-LIBFT = ../../libft
-
-LFLAGS	= -L $(LIBFT) -lft
+INCLUDES = -pthread
 
 SGFLAGS = -g ulimit -c unlimited
 
 FFLAGS = -g3 -fsanitize=address
 
 $(NAME) :	$(OBJS) 
-	@make -C $(LIBFT)
-	$(CC) $(FLAGS) $(LFLAGS) $(FFLAGS) $(INCLUDES) $(OBJS) $(LIBFT)/libft.a -o $(NAME) 
+	$(CC) $(FLAGS) $(FFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
 
 all : $(NAME)
 
@@ -49,9 +40,7 @@ all : $(NAME)
 
 clean:
 	@rm -f $(OBJS)
-	@make clean -s -C $(LIBFT)
 
 fclean: clean
 	@rm -f $(NAME)
-	@make fclean -s -C $(LIBFT)
 
