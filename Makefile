@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror
 
 PATH_SRCS = srcs
 
-SRCS_LIST = philosophers_42.c tools.c
+SRCS_LIST = philosophers_42.c tools.c logs.c time.c forks.c setup.c
 					
 SRCS = $(addprefix ${PATH_SRCS}/, ${SRCS_LIST})
 
@@ -31,7 +31,7 @@ SGFLAGS = -g ulimit -c unlimited
 FFLAGS = -g3 -fsanitize=address
 
 $(NAME) :	$(OBJS) 
-	$(CC) $(FLAGS)  $(INCLUDES) $(OBJS) -o $(NAME) 
+	$(CC) $(FLAGS) $(FFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
 
 all : $(NAME)
 
