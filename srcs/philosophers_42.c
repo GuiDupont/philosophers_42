@@ -1,94 +1,13 @@
 #include "../includes/Philosophers_42.h"
 
-void	eat(t_philo *philo)
+void	launch_philo(pthread_t *philos_pthread, int begin, t_philo *philos)
 {
-	usleep(100);
-	pthread_mutex_lock(&philo->forks[philo->min_fork]);
-	print_log(get_time_in_milli() - g_beginning, philo->id + 1, "has taken a fork\n");
-	pthread_mutex_lock(&philo->forks[philo->max_fork]);
-	print_log(get_time_in_milli() - g_beginning, philo->id + 1, "has taken a fork\n");	
-	philo->last_time_eat = get_time_in_milli();
-	print_log(get_time_in_milli() - g_beginning, philo->id + 1, "is eating\n");
-	usleep(philo->time_to_eat);
-	pthread_mutex_unlock(&philo->forks[philo->min_fork]);
-	pthread_mutex_unlock(&philo->forks[philo->max_fork]);
-}
-
-void 	*eat_sleep_think(void *philo_void)
-{
-	t_philo	*philo;
-	int		i;
-
-	philo = (t_philo*)philo_void;
-	i = 0;
-	philo->last_time_eat = g_beginning;
-	while (i != philo->nb_time_to_eat && g_stop == -1)
+	while (begin < philos->nb_philo)
 	{
-		eat(philo);
-		print_log(get_time_in_milli() - g_beginning, philo->id + 1, "is sleeping\n");
-		usleep(philo->time_to_sleep);
-		print_log(get_time_in_milli() - g_beginning, philo->id + 1, "is thinking\n");
-		i++;
+		philos[begin].last_time_eat = g_beginning;
+		pthread_create(&philos_pthread[begin], NULL, eat_sleep_think, &philos[begin]);
+		begin += 2;
 	}
-	return (NULL);
-}
-
-
-
-
-// void	*watch_death(void *philos)
-// {
-// 	t_philo	*philo;
-// 	long long diff;
-// 	long time_to_die;
-
-// 	philo = (t_philo*)philos;
-// 	time_to_die = philo[0].common_data->time_to_die;
-// 	while (g_stop == -1)
-// 	{
-// 		diff = get_time_in_milli() - philo[0].last_time_eat;
-// 		if (diff >= time_to_die)
-// 		{
-// 			g_stop = philo[0].id;
-// 			printf("%lld %d hasn't eat for %lld milliseconds, he died %lld millisecondes ago\n", get_time_in_milli() - philo->common_data->beginning, philo->id + 1, diff, diff - philo->common_data->time_to_die);
-// 			break ;
-// 		}
-// 		usleep(9000);
-// 	}
-// 	return (NULL);
-// }
-
-void	*watch_death(void *philo)
-{
-	int i;
-	t_philo *philos;
-	long long diff;
-
-	i = 0;
-	philos = (t_philo*)philo;
-	while (i < philos->nb_philo)
-	{
-		diff = get_time_in_milli() - philos[i].last_time_eat;
-		if (diff >= philos->time_to_die)
-		{
-			g_stop = philos[0].id;
-			printf("%lld %d hasn't eat for %lld milliseconds, he died %lld millisecondes ago\n", get_time_in_milli() - g_beginning, philos[i].id + 1, diff, diff - philos->time_to_die);
-			break ;
-		}
-		i++;
-		if (i == philos->nb_philo)
-			i = 0;
-		sleep(200);
-	}
-	return (NULL);
-}
-
-int	launch_watcher(t_philo *philos)
-{
-	pthread_t watcher;
-
-	pthread_create(&watcher, NULL, watch_death, philos);
-	return (1);
 }
 
 void	run_simulation(t_philo *philos)
@@ -100,19 +19,8 @@ void	run_simulation(t_philo *philos)
 	nb_philo = philos[0].nb_philo;
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
 	g_beginning = get_time_in_milli();
-	i = 0;
-	while (i < nb_philo)
-	{
-		pthread_create(&philos_pthread[i], NULL, eat_sleep_think, &philos[i]);
-		i += 2;
-	}
-	i = 1;
-	while (i < nb_philo)
-	{
-		pthread_create(&philos_pthread[i], NULL, eat_sleep_think, &philos[i]);
-		i += 2;
-	}
-
+	launch_philo(philos_pthread, 0, philos);
+	launch_philo(philos_pthread, 1, philos);
 	launch_watcher(philos);
 	i = 0;
 	while (i < nb_philo)
@@ -124,6 +32,12 @@ void	run_simulation(t_philo *philos)
 	free(philos_pthread);
 }
 
+int		free_n_exit(t_philo *philos, int exit_value)
+{
+	free(philos);
+	return (exit_value);
+}
+
 int main(int ac, char **av)
 {
 	t_philo	*philos;
@@ -132,12 +46,9 @@ int main(int ac, char **av)
 		return (1);
 	philos = set_up_philos(av);
 	if (!philos)
-	{
-		;//return (free_all(&common_data))
-	}
+		return (1);
 	g_stop = -1;
 	run_simulation(philos);
-	
 	free(philos->forks);
 	free(philos);
 	return (0);

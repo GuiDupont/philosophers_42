@@ -37,6 +37,7 @@ void    print_log(unsigned long timestamp, int id, char *log)
     
     if (g_stop != -1)
          return ;
+    timestamp -= g_beginning;
     index = ft_itoa_on_buffer(timestamp, str);
     index++;
     str[index++] = ' ';
