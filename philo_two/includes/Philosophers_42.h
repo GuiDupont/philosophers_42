@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <semaphore.h>
+#include <fcntl.h>
+#include <sys/stat.h> 
+#include <errno.h>
 
 int				g_stop;
 long long		g_beginning;
@@ -22,7 +26,7 @@ typedef struct	s_philo
 	long			time_to_die;
 	long long		beginning;
 	long long		last_time_eat;
-	pthread_mutex_t *forks;
+	sem_t			*forks;
 	pthread_mutex_t *print;
 
 }				t_philo;
@@ -42,7 +46,6 @@ int				get_min(int a, int b);
 int				get_max(int a, int b);
 
 t_philo			*set_up_philos(char **av);
-pthread_mutex_t *set_up_mutex(int nb_fork);
 
 int				launch_watcher(t_philo *philos);
 void			*watch_death(void *philo);

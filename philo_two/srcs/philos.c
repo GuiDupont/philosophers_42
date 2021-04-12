@@ -3,15 +3,20 @@
 void	eat(t_philo *philo)
 {
 	usleep(200);
-	pthread_mutex_lock(&philo->forks[philo->min_fork]);
+
+	//pthread_mutex_lock(&philo->forks[philo->min_fork]);
+	sem_wait(philo->forks);
 	print_log(get_time_in_milli(), philo->id + 1, "has taken a fork\n");
-	pthread_mutex_lock(&philo->forks[philo->max_fork]);
+	sem_wait(philo->forks);
+	//pthread_mutex_lock(&philo->forks[philo->max_fork]);
 	print_log(get_time_in_milli(), philo->id + 1, "has taken a fork\n");
 	philo->last_time_eat = get_time_in_milli();
 	print_log(philo->last_time_eat, philo->id + 1, "is eating\n");
 	usleep(philo->time_to_eat);
-	pthread_mutex_unlock(&philo->forks[philo->min_fork]);
-	pthread_mutex_unlock(&philo->forks[philo->max_fork]);
+	sem_post(philo->forks);
+	sem_post(philo->forks);
+	// pthread_mutex_unlock(&philo->forks[philo->min_fork]);
+	// pthread_mutex_unlock(&philo->forks[philo->max_fork]);
 }
 
 void 	*eat_sleep_think(void *philo_void)

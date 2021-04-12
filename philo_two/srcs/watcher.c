@@ -23,7 +23,6 @@ void	*watch_death(void *philo)
 		if (i == philos->nb_philo)
 			i = 0;
 	}
-
 	return (NULL);
 }
 

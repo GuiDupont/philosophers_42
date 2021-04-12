@@ -32,12 +32,6 @@ void	run_simulation(t_philo *philos)
 	free(philos_pthread);
 }
 
-int		free_n_exit(t_philo *philos, int exit_value)
-{
-	free(philos);
-	return (exit_value);
-}
-
 int main(int ac, char **av)
 {
 	t_philo	*philos;
@@ -49,7 +43,7 @@ int main(int ac, char **av)
 		return (1);
 	g_stop = -1;
 	run_simulation(philos);
-	free(philos->forks);
+	sem_close(philos->forks);
 	free(philos);
 	return (0);
 }

@@ -44,21 +44,35 @@ void	fill_philos_data(char **av, t_philo *philos, int i)
 		philos->nb_time_to_eat = -1;
 }
 
+static sem_t *set_up_sem(int nb_philo)
+{
+	int             i;
+    sem_t			*forks;
+
+	forks = sem_open("/f", O_CREAT, S_IRWXU, 1);
+	if (!forks)
+		return (NULL);
+	i = -1;
+	while (++i < nb_philo)
+        sem_post(forks);
+	return (forks);
+}
+
 t_philo			*set_up_philos(char **av)
 {
 	t_philo			*philos;
-    pthread_mutex_t *forks;
+    sem_t			*forks;
 	int				i;
 
 	if (!check_arg(av))
 		return (NULL);
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
-    forks = set_up_mutex(atoi(av[1]));
+    forks = set_up_sem(atoi(av[1]));
 	if (!philos || !forks)
 	{
 		free(philos);
 		free(forks);
-		write(1, "Can't allocate memory or setup mutex properly\n", 46);
+		printf("Can't allocate memory or setup sem properly\n");
 		return (NULL);
 	}
 	i = 0;
@@ -71,19 +85,4 @@ t_philo			*set_up_philos(char **av)
 	return (philos);
 }
 
-pthread_mutex_t *set_up_mutex(int nb_philo)
-{
-	int             i;
-    pthread_mutex_t *forks;
 
-	forks = malloc(sizeof(*forks) * nb_philo);
-	if (!forks)
-		return (NULL);
-	i = 0;
-	while (i < nb_philo)
-    {
-        pthread_mutex_init(&forks[i], NULL);
-		i++;
-    }
-	return (forks);
-}
