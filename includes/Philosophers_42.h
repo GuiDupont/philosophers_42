@@ -23,7 +23,7 @@ typedef struct	s_philo
 	long long		beginning;
 	long long		last_time_eat;
 	pthread_mutex_t *forks;
-	phtread_mutex_t *print;
+	pthread_mutex_t *print;
 
 }				t_philo;
 
