@@ -64,7 +64,7 @@ t_philo			*set_up_philos(char **av)
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
     forks = set_up_mutex(atoi(av[1]));
 	print = malloc(sizeof(*print));
-	
+
 	if (!philos || !forks || !print)
 	{
 		free_all(philos, forks, print);

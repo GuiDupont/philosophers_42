@@ -27,7 +27,7 @@ typedef struct	s_philo
 	long long		beginning;
 	long long		last_time_eat;
 	sem_t			*forks;
-	pthread_mutex_t *print;
+	sem_t			*print;
 
 }				t_philo;
 
@@ -38,7 +38,7 @@ long long		get_time_in_milli(void);
 int				get_min_fork(t_philo *philo);
 int				get_max_fork(t_philo *philo);
 
-void   			print_log(unsigned long timestamp, int id, char *log);
+void   			print_log(unsigned long timestamp, int id, char *log, t_philo *p);
 
 char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);

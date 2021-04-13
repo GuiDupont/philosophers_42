@@ -44,8 +44,8 @@ int main(int ac, char **av)
 	g_stop = -1;
 	run_simulation(philos);
 	sem_close(philos->forks);
+	sem_close(philos->print);
+
 	free(philos);
 	return (0);
 }
-
-//./philosophers_42 10 20 10 4

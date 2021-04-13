@@ -58,20 +58,30 @@ static sem_t *set_up_sem(int nb_philo)
 	return (forks);
 }
 
-t_philo			*set_up_philos(char **av)
+static void	free_all(t_philo *p, sem_t *f, sem_t *pr)
+{
+	free(p);
+	sem_close(f);
+	sem_close(pr);
+}
+
+
+t_philo		*set_up_philos(char **av)
 {
 	t_philo			*philos;
     sem_t			*forks;
 	int				i;
+	sem_t			*print;
 
 	if (!check_arg(av))
 		return (NULL);
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
     forks = set_up_sem(atoi(av[1]));
-	if (!philos || !forks)
+	print = sem_open("/p", O_CREAT, S_IRWXU, 1);
+	sem_post(print);
+	if (!philos || !forks || !print)
 	{
-		free(philos);
-		free(forks);
+		free_all(philos, forks, print);
 		printf("Can't allocate memory or setup sem properly\n");
 		return (NULL);
 	}
@@ -80,6 +90,7 @@ t_philo			*set_up_philos(char **av)
 	{
 		fill_philos_data(av, &philos[i], i);
         philos[i].forks = forks;
+		philos[i].print = print;
 		i++;
 	}
 	return (philos);
