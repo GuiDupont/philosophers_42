@@ -44,29 +44,40 @@ void	fill_philos_data(char **av, t_philo *philos, int i)
 		philos->nb_time_to_eat = -1;
 }
 
+static void free_all(t_philo *p, pthread_mutex_t *f, pthread_mutex_t *pr)
+{
+	free(p);
+	free(f);
+	free(pr);
+}
+
+
 t_philo			*set_up_philos(char **av)
 {
 	t_philo			*philos;
     pthread_mutex_t *forks;
 	int				i;
+    pthread_mutex_t *print;
 
 	if (!check_arg(av))
 		return (NULL);
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
     forks = set_up_mutex(atoi(av[1]));
-	if (!philos || !forks)
+	print = malloc(sizeof(*print));
+	
+	if (!philos || !forks || !print)
 	{
-		free(philos);
-		free(forks);
-		write(1, "Can't allocate memory or setup mutex properly\n", 46);
+		free_all(philos, forks, print);
+		printf("Can't allocate memory or setup mutex properly\n");
 		return (NULL);
 	}
+	pthread_mutex_init(print, NULL);
 	i = 0;
 	while (i < atoi(av[1]))
 	{
 		fill_philos_data(av, &philos[i], i);
         philos[i].forks = forks;
-		i++;
+		philos[i++].print = print;
 	}
 	return (philos);
 }

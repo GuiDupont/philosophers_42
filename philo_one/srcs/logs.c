@@ -29,14 +29,13 @@ static  int    ft_itoa_on_buffer(unsigned long timestamp, char *str)
     return (index);
 }
 
-
-void    print_log(unsigned long timestamp, int id, char *log)
+void    print_log(unsigned long timestamp, int id, char *log, t_philo *phi)
 {
     char str[254];
     int     index;
     
     if (g_stop != -1)
-         return ;
+        return ;
     timestamp -= g_beginning;
     index = ft_itoa_on_buffer(timestamp, str);
     index++;
@@ -45,5 +44,9 @@ void    print_log(unsigned long timestamp, int id, char *log)
     index++;
     str[index++] = ' ';
     ft_strcpy(&str[index], log);
-    write(1, str, ft_strlen(str)); 
+    if (g_stop != -1)
+        return ;
+    pthread_mutex_lock(phi->print);
+    write(1, str, ft_strlen(str));
+    pthread_mutex_unlock(phi->print);
 }

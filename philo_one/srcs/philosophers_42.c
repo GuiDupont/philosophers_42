@@ -50,6 +50,8 @@ int main(int ac, char **av)
 	g_stop = -1;
 	run_simulation(philos);
 	free(philos->forks);
+	pthread_mutex_unlock(philos->print);
+	free(philos->print);
 	free(philos);
 	return (0);
 }

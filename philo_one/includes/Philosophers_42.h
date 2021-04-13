@@ -34,7 +34,7 @@ long long		get_time_in_milli(void);
 int				get_min_fork(t_philo *philo);
 int				get_max_fork(t_philo *philo);
 
-void   			print_log(unsigned long timestamp, int id, char *log);
+void   			print_log(unsigned long time, int id, char *log, t_philo *phi);
 
 char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);
