@@ -49,12 +49,16 @@ static sem_t *set_up_sem(int nb_philo)
 	int             i;
     sem_t			*forks;
 
-	forks = sem_open("/f", O_CREAT, S_IRWXU, 1);
+	sem_unlink("/f");
+	forks = sem_open("/f", O_CREAT, 0777, 0);
 	if (!forks)
 		return (NULL);
+	sem_getvalue(forks, &i);
+
 	i = -1;
 	while (++i < nb_philo)
         sem_post(forks);
+	sem_getvalue(forks, &i);
 	return (forks);
 }
 
