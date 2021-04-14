@@ -10,12 +10,25 @@ void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 		pid = fork();
 		if (!pid)
 		{
-			launch_watcher(philos);
+			launch_watcher(&philos[begin]);
 			eat_sleep_think(&philos[begin]);
-			exit(0);
+			exit(g_stop);
 		}
 		philos_pid[begin] = pid;
 		begin += 2;
+	}
+}
+
+void	kill_philos(int *philo_pid, int nb_philos, t_philo *philo)
+{
+	int i;
+
+	i = 0;
+	(void)philo;
+	while (i < nb_philos)
+	{
+		kill(philo_pid[i], 9);
+		i++;
 	}
 }
 
@@ -23,13 +36,27 @@ void	run_simulation(t_philo *philos)
 {
 	int status;
 	int *philo_pids;
+	int i;
 
 	g_beginning = get_time_in_milli();
 	philo_pids = malloc(sizeof(int) * philos->nb_philo);
 	launch_philo(0, philos, philo_pids);
 	launch_philo(1, philos, philo_pids);
 	philos->philo_pid = philo_pids;
-	waitpid(0, &status, 0);
+	i = 0;
+	while (i < philos->nb_philo)
+	{
+		waitpid(-1, &status, 0);
+		printf("status = %d\n", WEXITSTATUS(status));
+		if (WEXITSTATUS(status) != 255)
+		{
+			kill_philos(philo_pids, philos->nb_philo, philos);
+			break ;
+		}
+		i++;
+	}
+	free(philo_pids);
+	return ;
 }
 
 int main(int ac, char **av)

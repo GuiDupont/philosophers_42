@@ -31,5 +31,5 @@ void 	*eat_sleep_think(void *philo_void)
 		i++;
 	}
 	philo->nb_time_to_eat = -2;
-	return (NULL);
+	return (philo_void);
 }

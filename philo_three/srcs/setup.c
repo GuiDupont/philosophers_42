@@ -49,7 +49,8 @@ static sem_t *set_up_sem(int nb_philo)
 	int             i;
     sem_t			*forks;
 
-	forks = sem_open("/f", O_CREAT, S_IRWXU, 1);
+	sem_unlink("/f");
+	forks = sem_open("/f", O_CREAT, S_IRWXU, 0);
 	if (!forks)
 		return (NULL);
 	i = -1;
@@ -72,13 +73,16 @@ t_philo		*set_up_philos(char **av)
     sem_t			*forks;
 	int				i;
 	sem_t			*print;
+//	sem_t			*stop;
 
 	if (!check_arg(av))
 		return (NULL);
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
     forks = set_up_sem(atoi(av[1]));
+	sem_unlink("/p");
 	print = sem_open("/p", O_CREAT, S_IRWXU, 1);
-	sem_post(print);
+//	stop = sem_open("/s", O_CREAT, S_IRWXU, 1);
+
 	if (!philos || !forks || !print)
 	{
 		free_all(philos, forks, print);

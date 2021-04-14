@@ -30,6 +30,7 @@ typedef struct	s_philo
 	long long		beginning;
 	long long		last_time_eat;
 	int				*philo_pid;
+	int				return_v;
 	sem_t			*forks;
 	sem_t			*print;
 
