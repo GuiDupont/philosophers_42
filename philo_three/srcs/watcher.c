@@ -19,6 +19,7 @@ void	*watch_death(void *philo_void)
 			break ;
 		}
 	}
+	usleep(5000);
 	return (NULL);
 }
 
