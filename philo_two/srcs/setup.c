@@ -33,10 +33,8 @@ void	fill_philos_data(char **av, t_philo *philos, int i)
 	philos->id = i;
 	philos->last_time_eat = 0;
 	philos->nb_philo = atoi(av[1]);
-	philos->min_fork = get_min_fork(philos);
-	philos->max_fork = get_max_fork(philos);
-	philos->time_to_eat = atoi(av[3]) * 1000;
-	philos->time_to_sleep = atoi(av[4]) * 1000;
+	philos->time_to_eat = atoi(av[3]);
+	philos->time_to_sleep = atoi(av[4]);
 	philos->time_to_die = atoi(av[2]);
 	if (av[5])
 		philos->nb_time_to_eat = atoi(av[5]);

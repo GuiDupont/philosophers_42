@@ -23,8 +23,6 @@ typedef struct	s_philo
 {
 	int				id;
 	int				nb_philo;
-	int				min_fork;
-	int				max_fork;
 	int				nb_time_to_eat;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -40,9 +38,7 @@ typedef struct	s_philo
 
 long long		tv_to_milli(struct timeval *tv);
 long long		get_time_in_milli(void);
-
-int				get_min_fork(t_philo *philo);
-int				get_max_fork(t_philo *philo);
+void			precise_sleep(long long time);
 
 void   			print_log(unsigned long timestamp, int id, char *log, t_philo *p);
 
@@ -55,6 +51,7 @@ t_philo			*set_up_philos(char **av);
 
 int				launch_watcher(t_philo *philos);
 void			*watch_death(void *philo);
+
 
 void			eat(t_philo *philo);
 void 			*eat_sleep_think(void *philo_void);

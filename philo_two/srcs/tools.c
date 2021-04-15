@@ -37,3 +37,12 @@ int	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
+
+void	precise_sleep(long long time)
+{
+	long long start;
+
+	start = get_time_in_milli();
+	while (get_time_in_milli() - start < time)
+		usleep(400);
+}
