@@ -27,10 +27,7 @@ void	*watch_death(void *philo_void)
 	return (NULL);
 }
 
-int	launch_watcher(t_philo *philos)
-{
-	pthread_t watcher;
-
-	pthread_create(&watcher, NULL, watch_death, philos);
-	return (1);
-}
+// void	launch_watcher(t_philo *philos, pthread_t *watcher)
+// {
+// 	pthread_create(watcher, NULL, watch_death, philos);
+// }

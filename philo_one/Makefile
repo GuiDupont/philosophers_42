@@ -31,7 +31,7 @@ SGFLAGS = -g ulimit -c unlimited
 FFLAGS = -g3 -fsanitize=address
 
 $(NAME) :	$(OBJS) 
-	$(CC) $(FLAGS) $(FFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
+	$(CC) $(FLAGS) $(NOFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
 
 all : $(NAME)
 

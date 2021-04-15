@@ -44,7 +44,6 @@ int				get_max(int a, int b);
 t_philo			*set_up_philos(char **av);
 pthread_mutex_t *set_up_mutex(int nb_fork);
 
-int				launch_watcher(t_philo *philos);
 void			*watch_death(void *philo);
 
 void			eat(t_philo *philo);

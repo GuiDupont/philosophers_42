@@ -10,9 +10,14 @@
 #include <fcntl.h>
 #include <sys/stat.h> 
 #include <errno.h>
+#include <string.h>
 
 int				g_stop;
 long long		g_beginning;
+
+# define FORK_SEM "/forks"
+# define PRINT_SEM "/print"
+# define TAKING_SEM "/taking"
 
 typedef struct	s_philo
 {
@@ -28,6 +33,7 @@ typedef struct	s_philo
 	long long		last_time_eat;
 	sem_t			*forks;
 	sem_t			*print;
+	sem_t			*taking_fork;
 
 }				t_philo;
 
@@ -52,5 +58,7 @@ void			*watch_death(void *philo);
 
 void			eat(t_philo *philo);
 void 			*eat_sleep_think(void *philo_void);
+
+void	free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk);
 
 #endif

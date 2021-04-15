@@ -15,19 +15,21 @@ void	run_simulation(t_philo *philos)
 	int i;
 	pthread_t *philos_pthread;
 	int	nb_philo;
+	pthread_t watcher;
 
 	nb_philo = philos[0].nb_philo;
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
 	g_beginning = get_time_in_milli();
 	launch_philo(philos_pthread, 0, philos);
 	launch_philo(philos_pthread, 1, philos);
-	launch_watcher(philos);
+	pthread_create(&watcher, NULL, watch_death, philos);
 	i = 0;
 	while (i < nb_philo)
 	{
 		pthread_join(philos_pthread[i], NULL);
 		i++;
 	}
+	pthread_detach(watcher);
 	i = 0;
 	free(philos_pthread);
 }
@@ -43,9 +45,6 @@ int main(int ac, char **av)
 		return (1);
 	g_stop = -1;
 	run_simulation(philos);
-	sem_close(philos->forks);
-	sem_close(philos->print);
-
-	free(philos);
+	free_all(philos, philos->forks, philos->print, philos->taking_fork);
 	return (0);
 }
