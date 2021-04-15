@@ -47,7 +47,6 @@ void	run_simulation(t_philo *philos)
 	while (i < philos->nb_philo)
 	{
 		waitpid(-1, &status, 0);
-		printf("status = %d\n", WEXITSTATUS(status));
 		if (WEXITSTATUS(status) != 255)
 		{
 			kill_philos(philo_pids, philos->nb_philo, philos);
