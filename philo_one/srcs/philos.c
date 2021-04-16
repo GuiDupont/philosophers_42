@@ -2,7 +2,6 @@
 
 void	eat(t_philo *philo)
 {
-	usleep(200);
 	pthread_mutex_lock(&philo->forks[philo->min_fork]);
 	print_log(get_time_in_milli(), philo->id + 1, "has taken a fork\n", philo);
 	pthread_mutex_lock(&philo->forks[philo->max_fork]);

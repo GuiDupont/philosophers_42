@@ -15,7 +15,7 @@ void	*watch_death(void *philo_void)
 		diff = now - philos[i].last_time_eat;
 		if (diff >= philos->time_to_die && philos[i].nb_time_to_eat != -2)
 		{
-            print_log(now, philos->id + 1, "die\n", philos);
+            print_log(now, philos->id + 1, "died\n", philos);
 			g_stop = philos[0].id;
 			pthread_mutex_lock(philos->print);
 			break ;
