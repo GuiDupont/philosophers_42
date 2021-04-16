@@ -13,16 +13,17 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-
 int				g_stop;
 long long		g_beginning;
+
+# define FORK_SEM "/forks"
+# define PRINT_SEM "/print"
+# define TAKING_SEM "/taking"
 
 typedef struct	s_philo
 {
 	int				id;
 	int				nb_philo;
-	int				min_fork;
-	int				max_fork;
 	int				nb_time_to_eat;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -30,7 +31,7 @@ typedef struct	s_philo
 	long long		beginning;
 	long long		last_time_eat;
 	int				*philo_pid;
-	int				return_v;
+	sem_t			*taking_fork;
 	sem_t			*forks;
 	sem_t			*print;
 
@@ -39,6 +40,7 @@ typedef struct	s_philo
 
 long long		tv_to_milli(struct timeval *tv);
 long long		get_time_in_milli(void);
+void			precise_sleep(long long time);
 
 int				get_min_fork(t_philo *philo);
 int				get_max_fork(t_philo *philo);
@@ -47,8 +49,6 @@ void   			print_log(unsigned long timestamp, int id, char *log, t_philo *p);
 
 char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);
-int				get_min(int a, int b);
-int				get_max(int a, int b);
 
 t_philo			*set_up_philos(char **av);
 

@@ -41,6 +41,7 @@ void	run_simulation(t_philo *philos)
 	g_beginning = get_time_in_milli();
 	philo_pids = malloc(sizeof(int) * philos->nb_philo);
 	launch_philo(0, philos, philo_pids);
+	usleep(1000);
 	launch_philo(1, philos, philo_pids);
 	philos->philo_pid = philo_pids;
 	i = 0;

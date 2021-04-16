@@ -1,19 +1,5 @@
 #include "../includes/Philosophers_42.h"
 
-int		get_min(int a, int b)
-{
-	if (a < b)
-		return (a);
-	return (b);
-}
-
-int		get_max(int a, int b)
-{
-	if (a > b)
-		return (a);
-	return (b);
-}
-
 char	*ft_strcpy(char *dest, char *src)
 {
 	int i;
@@ -36,4 +22,13 @@ int	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+void	precise_sleep(long long time)
+{
+	long long start;
+
+	start = get_time_in_milli();
+	while (get_time_in_milli() - start < time)
+		usleep(400);
 }

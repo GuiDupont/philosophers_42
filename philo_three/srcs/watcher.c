@@ -13,13 +13,13 @@ void	*watch_death(void *philo_void)
 		diff = now - philos->last_time_eat;
 		if (diff >= philos->time_to_die && philos->nb_time_to_eat != -2)
 		{
-			print_log(now, philos->id + 1, "die\n", philos);
+			print_log(now, philos->id + 1, "died\n", philos);
 			sem_wait(philos->print);
 			g_stop = philos[0].id;
 			break ;
 		}
+		//usleep(9000);
 	}
-	usleep(5000);
 	return (NULL);
 }
 
