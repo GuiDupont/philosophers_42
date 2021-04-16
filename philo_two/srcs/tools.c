@@ -1,19 +1,5 @@
 #include "../includes/Philosophers_42.h"
 
-int		get_min(int a, int b)
-{
-	if (a < b)
-		return (a);
-	return (b);
-}
-
-int		get_max(int a, int b)
-{
-	if (a > b)
-		return (a);
-	return (b);
-}
-
 char	*ft_strcpy(char *dest, char *src)
 {
 	int i;

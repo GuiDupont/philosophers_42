@@ -29,7 +29,7 @@ static  int    ft_itoa_on_buffer(unsigned long timestamp, char *str)
     return (index);
 }
 
-void    print_log(unsigned long timestamp, int id, char *log, t_philo *p)
+void            print_log(unsigned long timestamp, int id, char *log, t_philo *p)
 {
     char str[254];
     int     index;

@@ -44,7 +44,6 @@ void	run_simulation(t_philo *philos)
 	launch_philo(0, philos, philo_pids);
 	usleep(500);
 	launch_philo(1, philos, philo_pids);
-	philos->philo_pid = philo_pids;
 	i = 0;
 	while (i < philos->nb_philo)
 	{

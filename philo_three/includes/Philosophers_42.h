@@ -28,15 +28,11 @@ typedef struct	s_philo
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			time_to_die;
-	long long		beginning;
 	long long		last_time_eat;
-	int				*philo_pid;
 	sem_t			*taking_fork;
 	sem_t			*forks;
 	sem_t			*print;
-
 }				t_philo;
-
 
 long long		tv_to_milli(struct timeval *tv);
 long long		get_time_in_milli(void);
