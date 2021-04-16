@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror
 
 PATH_SRCS = srcs
 
-SRCS_LIST = philosophers_42.c tools.c logs.c time.c forks.c setup.c philos.c watcher.c
+SRCS_LIST = philosophers_42.c tools.c logs.c time.c setup.c philos.c watcher.c
 					
 SRCS = $(addprefix ${PATH_SRCS}/, ${SRCS_LIST})
 

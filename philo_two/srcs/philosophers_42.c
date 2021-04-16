@@ -2,6 +2,8 @@
 
 void	launch_philo(pthread_t *philos_pthread, int begin, t_philo *philos)
 {
+	if (!g_beginning)
+		g_beginning = get_time_in_milli();
 	while (begin < philos->nb_philo)
 	{
 		philos[begin].last_time_eat = g_beginning;
@@ -19,8 +21,8 @@ void	run_simulation(t_philo *philos)
 
 	nb_philo = philos[0].nb_philo;
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
-	g_beginning = get_time_in_milli();
 	launch_philo(philos_pthread, 0, philos);
+	usleep(500);
 	launch_philo(philos_pthread, 1, philos);
 	pthread_create(&watcher, NULL, watch_death, philos);
 	i = 0;
