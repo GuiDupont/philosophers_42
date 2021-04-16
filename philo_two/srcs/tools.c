@@ -1,4 +1,16 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/16 14:50:18 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/16 14:50:28 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/philosophers_42.h"
 
 char	*ft_strcpy(char *dest, char *src)
 {
@@ -14,7 +26,7 @@ char	*ft_strcpy(char *dest, char *src)
 	return (dest);
 }
 
-int	ft_strlen(const char *str)
+int		ft_strlen(const char *str)
 {
 	int i;
 

@@ -1,6 +1,18 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/16 14:46:50 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/16 14:48:52 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static	int 	check_arg(char **av)
+#include "../includes/philosophers_42.h"
+
+static	int		check_arg(char **av)
 {
 	int i;
 	int y;
@@ -28,7 +40,7 @@ static	int 	check_arg(char **av)
 	return (1);
 }
 
-void	fill_philos_data(char **av, t_philo *philos, int i)
+void			fill_philos_data(char **av, t_philo *philos, int i)
 {
 	philos->id = i;
 	philos->last_time_eat = 0;
@@ -42,7 +54,7 @@ void	fill_philos_data(char **av, t_philo *philos, int i)
 		philos->nb_time_to_eat = -1;
 }
 
-void set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
+void			set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 {
 	sem_unlink(FORK_SEM);
 	sem_unlink(PRINT_SEM);
@@ -52,7 +64,7 @@ void set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 	*t = sem_open(TAKING_SEM, O_CREAT, S_IRWXU, nb_philo - 1);
 }
 
-void	free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk)
+void			free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk)
 {
 	free(p);
 	sem_close(f);
@@ -63,10 +75,10 @@ void	free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk)
 	sem_unlink(TAKING_SEM);
 }
 
-t_philo		*set_up_philos(char **av)
+t_philo			*set_up_philos(char **av)
 {
 	t_philo			*philos;
-    sem_t			*forks;
+	sem_t			*forks;
 	int				i;
 	sem_t			*print;
 	sem_t			*taking_fork;
@@ -74,7 +86,7 @@ t_philo		*set_up_philos(char **av)
 	if (!check_arg(av))
 		return (NULL);
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
-    set_up_sem(atoi(av[1]), &forks, &print, &taking_fork);
+	set_up_sem(atoi(av[1]), &forks, &print, &taking_fork);
 	if (!philos || !forks || !print || !taking_fork)
 	{
 		free_all(philos, forks, print, taking_fork);
@@ -85,10 +97,9 @@ t_philo		*set_up_philos(char **av)
 	while (i < atoi(av[1]))
 	{
 		fill_philos_data(av, &philos[i], i);
-        philos[i].forks = forks;
+		philos[i].forks = forks;
 		philos[i].print = print;
-		philos[i].taking_fork = taking_fork;
-		i++;
+		philos[i++].taking_fork = taking_fork;
 	}
 	return (philos);
 }
