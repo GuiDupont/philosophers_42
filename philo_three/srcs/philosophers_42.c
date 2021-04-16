@@ -4,6 +4,8 @@ void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 {
 	int pid;
 
+	if (!g_beginning)
+		g_beginning = get_time_in_milli();
 	while (begin < philos->nb_philo)
 	{
 		philos[begin].last_time_eat = g_beginning;
@@ -38,10 +40,9 @@ void	run_simulation(t_philo *philos)
 	int *philo_pids;
 	int i;
 
-	g_beginning = get_time_in_milli();
 	philo_pids = malloc(sizeof(int) * philos->nb_philo);
 	launch_philo(0, philos, philo_pids);
-	usleep(1000);
+	usleep(500);
 	launch_philo(1, philos, philo_pids);
 	philos->philo_pid = philo_pids;
 	i = 0;

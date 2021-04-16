@@ -18,7 +18,6 @@ void	*watch_death(void *philo_void)
 			g_stop = philos[0].id;
 			break ;
 		}
-		//usleep(9000);
 	}
 	return (NULL);
 }
