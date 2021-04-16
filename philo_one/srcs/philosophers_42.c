@@ -1,23 +1,35 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers_42.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/16 14:12:14 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/16 14:13:31 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	launch_philo(pthread_t *philos_pthread, int begin, t_philo *philos)
+#include "../includes/philosophers_42.h"
+
+void	launch_philo(pthread_t *philos_pthread, int i, t_philo *philos)
 {
 	if (!g_beginning)
 		g_beginning = get_time_in_milli();
-	while (begin < philos->nb_philo)
+	while (i < philos->nb_philo)
 	{
-		philos[begin].last_time_eat = g_beginning;
-		pthread_create(&philos_pthread[begin], NULL, eat_sleep_think, &philos[begin]);
-		begin += 2;
+		philos[i].last_time_eat = g_beginning;
+		pthread_create(&philos_pthread[i], NULL, eat_sleep_think, &philos[i]);
+		i += 2;
 	}
 }
 
 void	run_simulation(t_philo *philos)
 {
-	int i;
-	pthread_t *philos_pthread;
-	int	nb_philo;
-	pthread_t watcher;
+	int			i;
+	pthread_t	*philos_pthread;
+	int			nb_philo;
+	pthread_t	watcher;
 
 	nb_philo = philos[0].nb_philo;
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
@@ -42,7 +54,7 @@ int		free_n_exit(t_philo *philos, int exit_value)
 	return (exit_value);
 }
 
-int main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_philo	*philos;
 
@@ -59,5 +71,3 @@ int main(int ac, char **av)
 	free(philos);
 	return (0);
 }
-
-//./philosophers_42 10 20 10 4

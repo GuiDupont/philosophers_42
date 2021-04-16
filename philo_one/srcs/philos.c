@@ -1,4 +1,16 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/16 14:11:47 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/16 14:11:48 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/philosophers_42.h"
 
 void	eat(t_philo *philo)
 {
@@ -13,7 +25,7 @@ void	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->forks[philo->max_fork]);
 }
 
-void 	*eat_sleep_think(void *philo_void)
+void	*eat_sleep_think(void *philo_void)
 {
 	t_philo	*philo;
 	int		i;
