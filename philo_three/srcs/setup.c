@@ -32,12 +32,12 @@ void	fill_philos_data(char **av, t_philo *philos, int i)
 {
 	philos->id = i;
 	philos->last_time_eat = 0;
-	philos->nb_philo = atoi(av[1]);
-	philos->time_to_eat = atoi(av[3]);
-	philos->time_to_sleep = atoi(av[4]);
-	philos->time_to_die = atoi(av[2]);
+	philos->nb_philo = ft_atoi(av[1]);
+	philos->time_to_eat = ft_atoi(av[3]);
+	philos->time_to_sleep = ft_atoi(av[4]);
+	philos->time_to_die = ft_atoi(av[2]);
 	if (av[5])
-		philos->nb_time_to_eat = atoi(av[5]);
+		philos->nb_time_to_eat = ft_atoi(av[5]);
 	else
 		philos->nb_time_to_eat = -1;
 }
@@ -47,10 +47,9 @@ void set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 	sem_unlink(FORK_SEM);
 	sem_unlink(PRINT_SEM);
 	sem_unlink(TAKING_SEM);
-	*f = sem_open(FORK_SEM, O_CREAT, S_IRWXU, nb_philo);
-	*p = sem_open(PRINT_SEM, O_CREAT, S_IRWXU, 1);
-	*t = sem_open(TAKING_SEM, O_CREAT, S_IRWXU, nb_philo - 1);
-
+	*f = sem_open(FORK_SEM, O_CREAT | S_IRWXU, 0644, nb_philo);
+	*p = sem_open(PRINT_SEM, O_CREAT | S_IRWXU, 0644, 1);
+	*t = sem_open(TAKING_SEM, O_CREAT | S_IRWXU, 0644, nb_philo - 1);
 }
 
 void	free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk)
@@ -83,7 +82,7 @@ t_philo		*set_up_philos(char **av)
 		return (NULL);
 	}
 	i = 0;
-	while (i < atoi(av[1]))
+	while (i < ft_atoi(av[1]))
 	{
 		fill_philos_data(av, &philos[i], i);
         philos[i].forks = forks;

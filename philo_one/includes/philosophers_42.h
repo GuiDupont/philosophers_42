@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Philosophers_42.h                                  :+:      :+:    :+:   */
+/*   philosophers_42.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 13:57:09 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/16 14:00:53 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/19 11:58:14 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);
 int				get_min(int a, int b);
 int				get_max(int a, int b);
+int				ft_atoi(const char *str);
 
 t_philo			*set_up_philos(char **av);
 pthread_mutex_t *set_up_mutex(int nb_fork);

@@ -19,6 +19,7 @@ long long		g_beginning;
 # define FORK_SEM "/forks"
 # define PRINT_SEM "/print"
 # define TAKING_SEM "/taking"
+# define STOP_SEM "/stop"
 
 typedef struct	s_philo
 {
@@ -45,13 +46,18 @@ void   			print_log(unsigned long timestamp, int id, char *log, t_philo *p);
 
 char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);
+int				ft_atoi(const char *str);
 
 t_philo			*set_up_philos(char **av);
 
-int				launch_watcher(t_philo *philos);
+int				launch_watcher(t_philo *philos, pthread_t *watcher);
 void			*watch_death(void *philo);
 
 void			eat(t_philo *philo);
 void 			*eat_sleep_think(void *philo_void);
+
+void			free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk);
+
+
 
 #endif

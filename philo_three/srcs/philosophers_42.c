@@ -3,6 +3,7 @@
 void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 {
 	int pid;
+	pthread_t watcher;
 
 	if (!g_beginning)
 		g_beginning = get_time_in_milli();
@@ -12,8 +13,9 @@ void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 		pid = fork();
 		if (!pid)
 		{
-			launch_watcher(&philos[begin]);
+			launch_watcher(&philos[begin], &watcher);
 			eat_sleep_think(&philos[begin]);
+			pthread_detach(watcher);
 			exit(g_stop);
 		}
 		philos_pid[begin] = pid;
@@ -21,12 +23,11 @@ void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 	}
 }
 
-void	kill_philos(int *philo_pid, int nb_philos, t_philo *philo)
+void	kill_philos(int *philo_pid, int nb_philos)
 {
 	int i;
 
 	i = 0;
-	(void)philo;
 	while (i < nb_philos)
 	{
 		kill(philo_pid[i], 9);
@@ -50,7 +51,7 @@ void	run_simulation(t_philo *philos)
 		waitpid(-1, &status, 0);
 		if (WEXITSTATUS(status) != 255)
 		{
-			kill_philos(philo_pids, philos->nb_philo, philos);
+			kill_philos(philo_pids, philos->nb_philo);
 			break ;
 		}
 		i++;
@@ -70,8 +71,6 @@ int main(int ac, char **av)
 		return (1);
 	g_stop = -1;
 	run_simulation(philos);
-	sem_close(philos->forks);
-	sem_close(philos->print);
-	free(philos);
+	free_all(philos, philos->forks, philos->print, philos->taking_fork);
 	return (0);
 }

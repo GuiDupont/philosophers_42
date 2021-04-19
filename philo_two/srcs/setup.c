@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:46:50 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/16 14:48:52 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/19 12:11:06 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void			fill_philos_data(char **av, t_philo *philos, int i)
 {
 	philos->id = i;
 	philos->last_time_eat = 0;
-	philos->nb_philo = atoi(av[1]);
-	philos->time_to_eat = atoi(av[3]);
-	philos->time_to_sleep = atoi(av[4]);
-	philos->time_to_die = atoi(av[2]);
+	philos->nb_philo = ft_atoi(av[1]);
+	philos->time_to_eat = ft_atoi(av[3]);
+	philos->time_to_sleep = ft_atoi(av[4]);
+	philos->time_to_die = ft_atoi(av[2]);
 	if (av[5])
-		philos->nb_time_to_eat = atoi(av[5]);
+		philos->nb_time_to_eat = ft_atoi(av[5]);
 	else
 		philos->nb_time_to_eat = -1;
 }
@@ -85,8 +85,8 @@ t_philo			*set_up_philos(char **av)
 
 	if (!check_arg(av))
 		return (NULL);
-	philos = malloc(sizeof(*philos) * atoi(av[1]));
-	set_up_sem(atoi(av[1]), &forks, &print, &taking_fork);
+	philos = malloc(sizeof(*philos) * ft_atoi(av[1]));
+	set_up_sem(ft_atoi(av[1]), &forks, &print, &taking_fork);
 	if (!philos || !forks || !print || !taking_fork)
 	{
 		free_all(philos, forks, print, taking_fork);
@@ -94,7 +94,7 @@ t_philo			*set_up_philos(char **av)
 		return (NULL);
 	}
 	i = 0;
-	while (i < atoi(av[1]))
+	while (i < ft_atoi(av[1]))
 	{
 		fill_philos_data(av, &philos[i], i);
 		philos[i].forks = forks;

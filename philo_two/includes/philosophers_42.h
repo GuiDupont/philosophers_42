@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:30:37 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/16 14:32:28 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/19 12:10:03 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void			print_log(unsigned long time, int id, char *log, t_philo *p);
 
 char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);
+int				ft_atoi(const char *str);
 
 t_philo			*set_up_philos(char **av);
 

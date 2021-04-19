@@ -6,15 +6,17 @@
 #    By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 11:29:54 by gdupont           #+#    #+#              #
-#    Updated: 2021/01/19 14:38:43 by gdupont          ###   ########.fr        #
+#    Updated: 2021/04/19 11:32:55 by gdupont          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philosophers_42
 
-CC = gcc
+CC = gcc 
 
 FLAGS = -Wall -Wextra -Werror
+
+DEBUG = -g
 
 PATH_SRCS = srcs
 
@@ -31,12 +33,12 @@ SGFLAGS = -g ulimit -c unlimited
 FFLAGS = -g3 -fsanitize=address
 
 $(NAME) :	$(OBJS) 
-	$(CC) $(FLAGS) $(FFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
+	$(CC) $(DEBUG) $(FLAGS) $(FFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
 
 all : $(NAME)
 
 %.o: %.c
-	@$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
+	@$(CC) $(DEBUG) $(FLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
 	@rm -f $(OBJS)

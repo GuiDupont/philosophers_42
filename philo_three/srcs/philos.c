@@ -6,7 +6,7 @@ void	eat(t_philo *philo)
 	sem_wait(philo->forks);
 	print_log(get_time_in_milli(), philo->id + 1, "has taken a fork\n", philo);
 	sem_wait(philo->forks);
-	print_log(get_time_in_milli(), philo->id + 1, "has taken a fork\n", philo);
+	print_log(get_time_in_milli(), philo->id + 1, "has taken a second fork\n", philo);
 	sem_post(philo->taking_fork);
 	philo->last_time_eat = get_time_in_milli();
 	print_log(philo->last_time_eat, philo->id + 1, "is eating\n", philo);

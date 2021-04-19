@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:50:18 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/16 14:50:28 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/19 12:08:06 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,31 @@ void	precise_sleep(long long time)
 	start = get_time_in_milli();
 	while (get_time_in_milli() - start < time)
 		usleep(400);
+}
+
+int		ft_atoi(const char *str)
+{
+	int		n;
+	int		negative;
+	long	result;
+
+	negative = 1;
+	n = 0;
+	result = 0;
+	while (str[n] == ' ' || str[n] == '\n' || str[n] == '\t' || str[n] == '\v'
+	|| str[n] == '\f' || str[n] == '\r')
+		n++;
+	if (str[n] == '-' || str[n] == '+')
+	{
+		if (str[n] == '-')
+			negative = -negative;
+		n++;
+	}
+	while (str[n] >= '0' && str[n] <= '9')
+		result = result * 10 + (str[n++] - '0');
+	if (result < 0 && negative > 0)
+		return (-1);
+	else if (result < 0 && negative < 0 && result * negative != -2147483648)
+		return (0);
+	return (result * negative);
 }
