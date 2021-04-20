@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:50:18 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/19 12:08:06 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 16:36:36 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,6 @@ int		ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
-}
-
-void	precise_sleep(long long time)
-{
-	long long start;
-
-	start = get_time_in_milli();
-	while (get_time_in_milli() - start < time)
-		usleep(400);
 }
 
 int		ft_atoi(const char *str)

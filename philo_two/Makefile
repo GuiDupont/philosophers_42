@@ -6,7 +6,7 @@
 #    By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 11:29:54 by gdupont           #+#    #+#              #
-#    Updated: 2021/01/19 14:38:43 by gdupont          ###   ########.fr        #
+#    Updated: 2021/04/20 16:53:49 by gdupont          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror
 
 PATH_SRCS = srcs
 
-SRCS_LIST = philosophers_42.c tools.c logs.c time.c setup.c philos.c watcher.c
+SRCS_LIST = main.c tools.c logs.c time.c setup.c philos.c watcher.c run_simulation.c
 					
 SRCS = $(addprefix ${PATH_SRCS}/, ${SRCS_LIST})
 
@@ -31,7 +31,7 @@ SGFLAGS = -g ulimit -c unlimited
 FFLAGS = -g3 -fsanitize=address
 
 $(NAME) :	$(OBJS) 
-	$(CC) $(INCLUDES) $(FLAGS) $(FFLAGS)  $(OBJS) -o $(NAME) 
+	$(CC) $(INCLUDES) $(FLAGS) $(NOFFLAGS)  $(OBJS) -o $(NAME) 
 
 all : $(NAME)
 

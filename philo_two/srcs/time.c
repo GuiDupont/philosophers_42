@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:49:30 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/16 14:49:31 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 16:36:42 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,13 @@ long long	get_time_in_milli(void)
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
+void	precise_sleep(long long time)
+{
+	long long start;
+
+	start = get_time_in_milli();
+	while (get_time_in_milli() - start < time)
+		usleep(400);
 }

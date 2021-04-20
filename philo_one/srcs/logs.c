@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:03:32 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 11:47:48 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 15:28:21 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,25 @@ static	int	ft_itoa_on_buffer(unsigned long timestamp, char *str)
 	return (index);
 }
 
-void		print_log(unsigned long timestamp, int id, char *log, t_philo *phi)
+void		print_log(long long time, int id, char *log, t_philo *phi)
 {
-	char	str[254];
-	int		index;
+	char		str[100];
+	int			index;
 
 	if (g_stop != -1)
 		return ;
-	timestamp -= g_beginning;
-	index = ft_itoa_on_buffer(timestamp, str);
+	pthread_mutex_lock(phi->print);
+	if (!time)
+		time = get_time_in_milli() - g_beginning;
+	else
+		time -= g_beginning;
+	index = ft_itoa_on_buffer(time, str);
 	index++;
 	str[index++] = ' ';
 	index += ft_itoa_on_buffer(id, &str[index]);
 	index++;
 	str[index++] = ' ';
 	ft_strcpy(&str[index], log);
-	if (g_stop != -1)
-		return ;
-	pthread_mutex_lock(phi->print);
 	write(1, str, ft_strlen(str));
 	pthread_mutex_unlock(phi->print);
 }

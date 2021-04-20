@@ -6,13 +6,13 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/19 13:33:53 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 11:32:31 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 15:02:32 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_42.h"
 
-void		ft_swap(int *a, int *b)
+void	ft_swap(int *a, int *b)
 {
 	int c;
 

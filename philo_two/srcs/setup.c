@@ -6,13 +6,13 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:46:50 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/19 12:11:06 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 16:46:31 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_42.h"
 
-static	int		check_arg(char **av)
+static	int	check_arg(char **av)
 {
 	int i;
 	int y;
@@ -40,9 +40,9 @@ static	int		check_arg(char **av)
 	return (1);
 }
 
-void			fill_philos_data(char **av, t_philo *philos, int i)
+static void	fill_philos_data(char **av, t_philo *philos, int i)
 {
-	philos->id = i;
+	philos->id = i + 1;
 	philos->last_time_eat = 0;
 	philos->nb_philo = ft_atoi(av[1]);
 	philos->time_to_eat = ft_atoi(av[3]);
@@ -54,7 +54,7 @@ void			fill_philos_data(char **av, t_philo *philos, int i)
 		philos->nb_time_to_eat = -1;
 }
 
-void			set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
+static void	set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 {
 	sem_unlink(FORK_SEM);
 	sem_unlink(PRINT_SEM);
@@ -62,17 +62,6 @@ void			set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 	*f = sem_open(FORK_SEM, O_CREAT, S_IRWXU, nb_philo);
 	*p = sem_open(PRINT_SEM, O_CREAT, S_IRWXU, 1);
 	*t = sem_open(TAKING_SEM, O_CREAT, S_IRWXU, nb_philo - 1);
-}
-
-void			free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk)
-{
-	free(p);
-	sem_close(f);
-	sem_unlink(FORK_SEM);
-	sem_close(pr);
-	sem_unlink(PRINT_SEM);
-	sem_close(tk);
-	sem_unlink(TAKING_SEM);
 }
 
 t_philo			*set_up_philos(char **av)
@@ -89,7 +78,7 @@ t_philo			*set_up_philos(char **av)
 	set_up_sem(ft_atoi(av[1]), &forks, &print, &taking_fork);
 	if (!philos || !forks || !print || !taking_fork)
 	{
-		free_all(philos, forks, print, taking_fork);
+		free_all(philos);
 		printf("Can't allocate memory or setup sem properly\n");
 		return (NULL);
 	}

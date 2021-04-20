@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:14:59 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 11:37:00 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 14:55:25 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static	int		check_arg(char **av)
 	return (1);
 }
 
-void			fill_philos_data(char **av, t_philo *philos, int i)
+static	void	fill_philos_data(char **av, t_philo *philos, int i)
 {
 	philos->id = i;
 	philos->last_time_eat = 0;
@@ -54,8 +54,6 @@ void			fill_philos_data(char **av, t_philo *philos, int i)
 		philos->nb_time_to_eat = ft_atoi(av[5]);
 	else
 		philos->nb_time_to_eat = -1;
-	if (philos->id % 2 == 1)
-		ft_swap(&(philos->min_fork), &(philos->max_fork));
 }
 
 static	void	free_all(t_philo *p, pthread_mutex_t *f, pthread_mutex_t *pr)
@@ -63,6 +61,23 @@ static	void	free_all(t_philo *p, pthread_mutex_t *f, pthread_mutex_t *pr)
 	free(p);
 	free(f);
 	free(pr);
+}
+
+pthread_mutex_t	*set_up_mutex(int nb_philo)
+{
+	int				i;
+	pthread_mutex_t	*forks;
+
+	forks = malloc(sizeof(*forks) * nb_philo);
+	if (!forks)
+		return (NULL);
+	i = 0;
+	while (i < nb_philo)
+	{
+		pthread_mutex_init(&forks[i], NULL);
+		i++;
+	}
+	return (forks);
 }
 
 t_philo			*set_up_philos(char **av)
@@ -92,21 +107,4 @@ t_philo			*set_up_philos(char **av)
 		philos[i++].print = print;
 	}
 	return (philos);
-}
-
-pthread_mutex_t	*set_up_mutex(int nb_philo)
-{
-	int				i;
-	pthread_mutex_t	*forks;
-
-	forks = malloc(sizeof(*forks) * nb_philo);
-	if (!forks)
-		return (NULL);
-	i = 0;
-	while (i < nb_philo)
-	{
-		pthread_mutex_init(&forks[i], NULL);
-		i++;
-	}
-	return (forks);
 }

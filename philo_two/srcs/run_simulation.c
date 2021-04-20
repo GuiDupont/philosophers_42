@@ -1,18 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers_42.c                                  :+:      :+:    :+:   */
+/*   run_simulation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/16 14:43:21 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/16 14:45:46 by gdupont          ###   ########.fr       */
+/*   Created: 2021/04/20 16:29:34 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/20 17:28:33 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_42.h"
 
-void	launch_philo(pthread_t *philos_pthread, int i, t_philo *philos)
+static void	free_pthread(pthread_t *p, pthread_t *w, int nb)
+{
+	int i;
+
+	i = -1;
+	while (++i < nb)
+	{
+		pthread_detach(w[i]);
+		pthread_detach(p[i]);
+	}
+	free(w);
+	free(p);
+	printf("we jsut free pthread malloc and detach\n");
+}
+
+void			free_all_sem(sem_t *f, sem_t *pr, sem_t *tk)
+{
+	printf("we are about to unlink\n");
+	sem_close(f);
+	sem_unlink(FORK_SEM);
+	sem_close(pr);
+	sem_unlink(PRINT_SEM);
+	sem_close(tk);
+	sem_unlink(TAKING_SEM);
+}
+
+static void	launch_philo(pthread_t *philos_pthread, int i, t_philo *philos)
 {
 	if (!g_beginning)
 		g_beginning = get_time_in_milli();
@@ -24,41 +50,26 @@ void	launch_philo(pthread_t *philos_pthread, int i, t_philo *philos)
 	}
 }
 
-void	run_simulation(t_philo *philos)
+void		run_simulation(t_philo *philos)
 {
 	int			i;
 	pthread_t	*philos_pthread;
 	int			nb_philo;
-	pthread_t	watcher;
+	pthread_t	*watcher_pthread;
 
 	nb_philo = philos[0].nb_philo;
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
+	watcher_pthread = malloc(sizeof(*watcher_pthread) * (nb_philo + 1));
 	launch_philo(philos_pthread, 0, philos);
-	usleep(500);
+	usleep(1000);
 	launch_philo(philos_pthread, 1, philos);
-	pthread_create(&watcher, NULL, watch_death, philos);
 	i = 0;
 	while (i < nb_philo)
 	{
+		pthread_create(&watcher_pthread[i], NULL, watch_death, &philos[i]);
 		pthread_join(philos_pthread[i], NULL);
 		i++;
 	}
-	pthread_detach(watcher);
-	i = 0;
-	free(philos_pthread);
-}
-
-int		main(int ac, char **av)
-{
-	t_philo	*philos;
-
-	if (ac != 5 && ac != 6)
-		return (1);
-	philos = set_up_philos(av);
-	if (!philos)
-		return (1);
-	g_stop = -1;
-	run_simulation(philos);
-	free_all(philos, philos->forks, philos->print, philos->taking_fork);
-	return (0);
+	free_pthread(philos_pthread, watcher_pthread, philos->nb_philo);
+	free_all(philos);
 }
