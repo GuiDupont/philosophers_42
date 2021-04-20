@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:14:59 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/19 11:59:58 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 11:37:00 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,15 @@ void			fill_philos_data(char **av, t_philo *philos, int i)
 	philos->nb_philo = ft_atoi(av[1]);
 	philos->min_fork = get_min_fork(philos);
 	philos->max_fork = get_max_fork(philos);
-	philos->time_to_eat = ft_atoi(av[3]) * 1000;
-	philos->time_to_sleep = ft_atoi(av[4]) * 1000;
+	philos->time_to_eat = ft_atoi(av[3]);
+	philos->time_to_sleep = ft_atoi(av[4]);
 	philos->time_to_die = ft_atoi(av[2]);
 	if (av[5])
 		philos->nb_time_to_eat = ft_atoi(av[5]);
 	else
 		philos->nb_time_to_eat = -1;
+	if (philos->id % 2 == 1)
+		ft_swap(&(philos->min_fork), &(philos->max_fork));
 }
 
 static	void	free_all(t_philo *p, pthread_mutex_t *f, pthread_mutex_t *pr)

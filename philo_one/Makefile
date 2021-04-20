@@ -6,7 +6,7 @@
 #    By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 11:29:54 by gdupont           #+#    #+#              #
-#    Updated: 2021/01/19 14:38:43 by gdupont          ###   ########.fr        #
+#    Updated: 2021/04/20 11:32:13 by gdupont          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAGS = -Wall -Wextra -Werror
 
 PATH_SRCS = srcs
 
-SRCS_LIST = philosophers_42.c tools.c logs.c time.c forks.c setup.c philos.c watcher.c
+SRCS_LIST = philosophers_42.c tools.c logs.c time.c forks.c setup.c philos.c watcher.c tools_2.c
 					
 SRCS = $(addprefix ${PATH_SRCS}/, ${SRCS_LIST})
 

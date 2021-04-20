@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 13:57:09 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/19 11:58:14 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/20 11:37:31 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ typedef struct	s_philo
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			time_to_die;
-	long long		last_time_eat;
+	volatile long long	last_time_eat;
 	pthread_mutex_t *forks;
 	pthread_mutex_t *print;
 }				t_philo;
 
 long long		tv_to_milli(struct timeval *tv);
 long long		get_time_in_milli(void);
+void			precise_sleep(long long time);
+
 
 int				get_min_fork(t_philo *philo);
 int				get_max_fork(t_philo *philo);
@@ -50,6 +52,8 @@ int				ft_strlen(const char *str);
 int				get_min(int a, int b);
 int				get_max(int a, int b);
 int				ft_atoi(const char *str);
+void			ft_swap(int *a, int *b);
+
 
 t_philo			*set_up_philos(char **av);
 pthread_mutex_t *set_up_mutex(int nb_fork);
