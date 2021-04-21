@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 13:57:09 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 15:11:35 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/21 10:24:54 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef struct	s_philo
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			time_to_die;
-	long long	last_time_eat;
+	long long		last_time_eat;
 	pthread_mutex_t *forks;
 	pthread_mutex_t *print;
 }				t_philo;
