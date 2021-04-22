@@ -52,15 +52,19 @@ void set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 	*t = sem_open(TAKING_SEM, O_CREAT | S_IRWXU, 0644, nb_philo - 1);
 }
 
-void	free_all(t_philo *p, sem_t *f, sem_t *pr, sem_t *tk)
+void	free_all(t_philo *p)
 {
-	free(p);
-	sem_close(f);
+	sem_close(p->forks);
 	sem_unlink(FORK_SEM);
-	sem_close(pr);
+	sem_close(p->print);
 	sem_unlink(PRINT_SEM);
-	sem_close(tk);
+	sem_close(p->taking_fork);
 	sem_unlink(TAKING_SEM);
+	sem_close(p->eaten);
+	sem_unlink(EATEN_SEM);
+	sem_close(p->stop);
+	sem_unlink(STOP_SEM);
+	free(p);
 }
 
 t_philo		*set_up_philos(char **av)
@@ -70,24 +74,28 @@ t_philo		*set_up_philos(char **av)
 	int				i;
 	sem_t			*print;
 	sem_t			*taking_fork;
+	sem_t			*stop;
+	sem_t			*eaten;
 
 	if (!check_arg(av))
 		return (NULL);
 	philos = malloc(sizeof(*philos) * atoi(av[1]));
     set_up_sem(atoi(av[1]), &forks, &print, &taking_fork);
 	if (!philos || !forks || !print || !taking_fork)
-	{
-		free_all(philos, forks, print, taking_fork);
-		printf("Can't allocate memory or setup sem properly\n");
-		return (NULL);
-	}
+		ft_exit("Can't allocate memory or setup sem properly\n");
 	i = 0;
+	sem_unlink(STOP_SEM);
+	sem_unlink(EATEN_SEM);
+	stop = sem_open(STOP_SEM, O_CREAT | S_IRWXU, 0644, 0);
+	eaten = sem_open(EATEN_SEM, O_CREAT | S_IRWXU, 0644, 0);
 	while (i < ft_atoi(av[1]))
 	{
 		fill_philos_data(av, &philos[i], i);
         philos[i].forks = forks;
 		philos[i].print = print;
 		philos[i].taking_fork = taking_fork;
+		philos[i].eaten = eaten;
+		philos[i].stop = stop;
 		i++;
 	}
 	return (philos);

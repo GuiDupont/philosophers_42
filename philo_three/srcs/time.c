@@ -12,3 +12,12 @@ long long	get_time_in_milli(void)
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
+
+void	precise_sleep(long long time)
+{
+	long long start;
+
+	start = get_time_in_milli();
+	while (get_time_in_milli() - start < time)
+		usleep(400);
+}

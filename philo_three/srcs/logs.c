@@ -31,12 +31,11 @@ static  int    ft_itoa_on_buffer(unsigned long timestamp, char *str)
 
 void    print_log(unsigned long timestamp, int id, char *log, t_philo *p)
 {
-    char str[254];
+    char str[100];
     int     index;
-    
-    if (g_stop != -1)
-         return ;
+
     timestamp -= g_beginning;
+	sem_wait(p->print);
     index = ft_itoa_on_buffer(timestamp, str);
     index++;
     str[index++] = ' ';
@@ -44,7 +43,8 @@ void    print_log(unsigned long timestamp, int id, char *log, t_philo *p)
     index++;
     str[index++] = ' ';
     ft_strcpy(&str[index], log);
-	sem_wait(p->print);
-    write(1, str, ft_strlen(str));
-    sem_post(p->print);
+    if (g_stop == -1)
+	    write(1, str, ft_strlen(str));
+    if (log[0] != 'd')
+		sem_post(p->print);
 }

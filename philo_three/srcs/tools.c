@@ -24,15 +24,6 @@ int	ft_strlen(const char *str)
 	return (i);
 }
 
-void	precise_sleep(long long time)
-{
-	long long start;
-
-	start = get_time_in_milli();
-	while (get_time_in_milli() - start < time)
-		usleep(400);
-}
-
 int		ft_atoi(const char *str)
 {
 	int		n;
@@ -58,4 +49,10 @@ int		ft_atoi(const char *str)
 	else if (result < 0 && negative < 0 && result * negative != -2147483648)
 		return (0);
 	return (result * negative);
+}
+
+void	*ft_exit(char *str)
+{
+	printf("%s\n", str);
+	exit(1);
 }

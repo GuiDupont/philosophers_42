@@ -31,6 +31,7 @@ void 	*eat_sleep_think(void *philo_void)
 		print_log(get_time_in_milli(), philo->id + 1, "is thinking\n", philo);
 		i++;
 	}
+	sem_post(philo->eaten);
 	philo->nb_time_to_eat = -2;
 	return (NULL);
 }
