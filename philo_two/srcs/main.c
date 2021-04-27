@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:43:21 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 17:25:05 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/27 14:27:02 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	free_all(t_philo *philos)
 	free(philos);
 }
 
-int			main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_philo	*philos;
 
@@ -29,6 +29,5 @@ int			main(int ac, char **av)
 		return (1);
 	g_stop = -1;
 	run_simulation(philos);
-	//free_all(philos);
 	return (0);
 }

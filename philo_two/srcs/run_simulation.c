@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:29:34 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 17:28:33 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/27 14:27:14 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,18 @@ static void	free_pthread(pthread_t *p, pthread_t *w, int nb)
 {
 	int i;
 
-	i = -1;
-	while (++i < nb)
+	i = 0;
+	while (i < nb)
 	{
 		pthread_detach(w[i]);
-		pthread_detach(p[i]);
+		i++;
 	}
 	free(w);
 	free(p);
-	printf("we jsut free pthread malloc and detach\n");
 }
 
-void			free_all_sem(sem_t *f, sem_t *pr, sem_t *tk)
+void		free_all_sem(sem_t *f, sem_t *pr, sem_t *tk)
 {
-	printf("we are about to unlink\n");
 	sem_close(f);
 	sem_unlink(FORK_SEM);
 	sem_close(pr);
@@ -46,7 +44,7 @@ static void	launch_philo(pthread_t *philos_pthread, int i, t_philo *philos)
 	{
 		philos[i].last_time_eat = g_beginning;
 		pthread_create(&philos_pthread[i], NULL, eat_sleep_think, &philos[i]);
-		i += 2;
+		i++;
 	}
 }
 
@@ -61,15 +59,12 @@ void		run_simulation(t_philo *philos)
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
 	watcher_pthread = malloc(sizeof(*watcher_pthread) * (nb_philo + 1));
 	launch_philo(philos_pthread, 0, philos);
-	usleep(1000);
-	launch_philo(philos_pthread, 1, philos);
-	i = 0;
-	while (i < nb_philo)
-	{
+	i = -1;
+	while (++i < nb_philo)
 		pthread_create(&watcher_pthread[i], NULL, watch_death, &philos[i]);
+	i = -1;
+	while (++i < nb_philo)
 		pthread_join(philos_pthread[i], NULL);
-		i++;
-	}
 	free_pthread(philos_pthread, watcher_pthread, philos->nb_philo);
 	free_all(philos);
 }

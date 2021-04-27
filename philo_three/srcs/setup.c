@@ -49,7 +49,7 @@ void set_up_sem(int nb_philo, sem_t **f, sem_t **p, sem_t **t)
 	sem_unlink(TAKING_SEM);
 	*f = sem_open(FORK_SEM, O_CREAT | S_IRWXU, 0644, nb_philo);
 	*p = sem_open(PRINT_SEM, O_CREAT | S_IRWXU, 0644, 1);
-	*t = sem_open(TAKING_SEM, O_CREAT | S_IRWXU, 0644, nb_philo - 1);
+	*t = sem_open(TAKING_SEM, O_CREAT | S_IRWXU, 0644, 1);
 }
 
 void	free_all(t_philo *p)

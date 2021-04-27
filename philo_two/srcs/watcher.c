@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:50:59 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 17:14:44 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/27 12:34:10 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ void	*watch_death(void *philo_void)
 		diff = now - philos->last_time_eat;
 		if (diff >= philos->time_to_die && philos->nb_time_to_eat != -2)
 		{
+			sem_wait(philos->print);
 			if (g_stop == -1)
-				print_log(now, philos->id, "died\n", philos);
+				printf("%lld %d died\n", now - g_beginning, philos->id);
 			g_stop = philos->id;
+			sem_post(philos->print);
 			break ;
 		}
 	}

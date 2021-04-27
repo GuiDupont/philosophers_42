@@ -6,7 +6,7 @@
 #    By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 11:29:54 by gdupont           #+#    #+#              #
-#    Updated: 2021/04/20 16:53:49 by gdupont          ###   ########.fr        #
+#    Updated: 2021/04/27 12:07:56 by gdupont          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,7 @@ OBJS = $(SRCS:.c=.o)
 
 INCLUDES = -pthread
 
-SGFLAGS = -g ulimit -c unlimited
-
-FFLAGS = -g3 -fsanitize=address
+FFLAGS = -g3 -fsanitize=address 
 
 $(NAME) :	$(OBJS) 
 	$(CC) $(INCLUDES) $(FLAGS) $(NOFFLAGS)  $(OBJS) -o $(NAME) 

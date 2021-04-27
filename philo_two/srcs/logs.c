@@ -6,13 +6,13 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:35:25 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 16:48:18 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/27 14:26:49 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_42.h"
 
-static	int		nb_length(unsigned long n)
+static	int	nb_length(unsigned long n)
 {
 	int	count;
 
@@ -25,7 +25,7 @@ static	int		nb_length(unsigned long n)
 	return (count);
 }
 
-static	int		ft_itoa_on_buffer(unsigned long timestamp, char *str)
+static	int	ft_itoa_on_buffer(unsigned long timestamp, char *str)
 {
 	int nb_len;
 	int index;
@@ -41,26 +41,6 @@ static	int		ft_itoa_on_buffer(unsigned long timestamp, char *str)
 	return (index);
 }
 
-// void			print_log(unsigned long time, int id, char *log, t_philo *p)
-// {
-// 	char	str[100];
-// 	int		index;
-
-// 	if (g_stop != -1)
-// 		return ;
-// 	time -= g_beginning;
-// 	sem_wait(p->print);
-// 	index = ft_itoa_on_buffer(time, str);
-// 	index++;
-// 	str[index++] = ' ';
-// 	index += ft_itoa_on_buffer(id, &str[index]);
-// 	index++;
-// 	str[index++] = ' ';
-// 	ft_strcpy(&str[index], log);
-// 	write(1, str, ft_strlen(str));
-// 	sem_post(p->print);
-// }
-
 void		print_log(long long time, int id, char *log, t_philo *phi)
 {
 	char		str[100];
@@ -68,8 +48,6 @@ void		print_log(long long time, int id, char *log, t_philo *phi)
 
 	if (g_stop != -1)
 		return ;
-	if (log[0] == 'd')
-		g_stop = id;
 	sem_wait(phi->print);
 	if (!time)
 		time = get_time_in_milli() - g_beginning;
@@ -82,7 +60,7 @@ void		print_log(long long time, int id, char *log, t_philo *phi)
 	index++;
 	str[index++] = ' ';
 	ft_strcpy(&str[index], log);
-	if (g_stop == -1 || g_stop == id)
+	if (g_stop == -1)
 		write(1, str, ft_strlen(str));
 	sem_post(phi->print);
 }
