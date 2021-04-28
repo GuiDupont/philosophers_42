@@ -13,6 +13,7 @@ void	eat(t_philo *philo)
 	precise_sleep(philo->time_to_eat);
 	sem_post(philo->forks);
 	sem_post(philo->forks);
+	
 }
 
 void 	*eat_sleep_think(void *philo_void)
@@ -31,7 +32,9 @@ void 	*eat_sleep_think(void *philo_void)
 		print_log(get_time_in_milli(), philo->id + 1, "is thinking\n", philo);
 		i++;
 	}
-	sem_post(philo->eaten);
+	//printf("hello 1 from philo\n");
+
 	philo->nb_time_to_eat = -2;
+	//printf("hello 2 from philo\n");
 	return (NULL);
 }

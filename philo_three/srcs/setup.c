@@ -65,6 +65,7 @@ void	free_all(t_philo *p)
 	sem_close(p->stop);
 	sem_unlink(STOP_SEM);
 	free(p);
+//	printf("free\n");
 }
 
 t_philo		*set_up_philos(char **av)

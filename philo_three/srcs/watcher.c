@@ -6,11 +6,9 @@ void	*watch_eaten(void *philos)
 	
 	philo = (t_philo*)philos;
 	sem_wait(philo->stop);
-	g_stop = 1;
-	sem_post(philo->stop);
-	sem_post(philo->eaten);
-	//printf("philo %d out\n", philo->id);
-	exit(0);
+	if (g_stop == -1)
+		g_stop = -2;
+	return (NULL);
 }
 
 
@@ -19,19 +17,29 @@ void	*watch_death(void *philo_void)
 	t_philo		*philos;
 	long long	diff;
     long long	now;
+	int			i;
 
 	philos = (t_philo*)philo_void;
+	i = -1;
 	while (1)
 	{
         now = get_time_in_milli();
 		diff = now - philos->last_time_eat;
 		if (diff >= philos->time_to_die && philos->nb_time_to_eat != -2)
 		{
-			print_log(now, philos->id + 1, "died\n", philos);
-			sem_post(philos->stop);
-			g_stop = philos[0].id;
+			sem_wait(philos->print);
+			if (g_stop == -1)
+			{
+				printf("%lld %d died\n", now - g_beginning, philos->id + 1);
+				g_stop = philos[0].id;
+			}
+			while (++i < philos->nb_philo)
+				sem_post(philos->stop);
+			sem_post(philos->print);
 			break ;
 		}
+		if (g_stop != -1)
+			break ;
 	}
 	return (NULL);
 }

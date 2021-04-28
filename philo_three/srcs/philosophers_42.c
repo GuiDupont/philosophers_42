@@ -2,7 +2,6 @@
 
 void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 {
-	int pid;
 	pthread_t watcher_death;
 	pthread_t watcher_eaten;
 
@@ -11,33 +10,23 @@ void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 	while (begin < philos->nb_philo)
 	{
 		philos[begin].last_time_eat = g_beginning;
-		pid = fork();
-		if (!pid)
+		philos_pid[begin] = fork();
+		if (!philos_pid[begin])
 		{
 			launch_watcher(&philos[begin], &watcher_death, &watcher_eaten);
 			eat_sleep_think(&philos[begin]);
+			printf("philos : %d\n", philos[begin].id);
 			pthread_detach(watcher_death);
 			pthread_detach(watcher_eaten);
-			//sem_post(philos->eaten);
+			sem_post(philos->eaten);
+			free_all(philos);
+			free(philos_pid);
 			exit(g_stop);
 		}
-		philos_pid[begin] = pid;
 		begin += 1;
 	}
-}
 
-// void	wait_for_child()
-// {
-// 	while (i++ < philos->nb_philo)
-// 	{
-// 		waitpid(-1, &status, WUNTRACED);
-// 		if (WEXITSTATUS(status) != 255)
-// 		{
-// 			kill(-1, SIGCHLD);
-// 			break;
-// 		}
-// 	}
-// }
+}
 
 
 void	*wait_eaten(void *sem_eat, int nb_philos)
@@ -50,11 +39,16 @@ void	*wait_eaten(void *sem_eat, int nb_philos)
 void	run_simulation(t_philo *philos)
 {
 	int *philo_pids;
+	int status;
+	int i;
 
+	i = -1;
 	philo_pids = malloc(sizeof(int) * philos->nb_philo);
 	launch_philo(0, philos, philo_pids);
-	//launch_philo(1, philos, philo_pids);
 	wait_eaten(philos->eaten, philos->nb_philo);
+	while (++i < philos->nb_philo)
+		waitpid(-1, &status, 0);
+
 	free(philo_pids);
 	return ;
 }

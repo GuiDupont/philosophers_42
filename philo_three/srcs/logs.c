@@ -45,6 +45,5 @@ void    print_log(unsigned long timestamp, int id, char *log, t_philo *p)
     ft_strcpy(&str[index], log);
     if (g_stop == -1)
 	    write(1, str, ft_strlen(str));
-    if (log[0] != 'd')
-		sem_post(p->print);
+	sem_post(p->print);
 }
