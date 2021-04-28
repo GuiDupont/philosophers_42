@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:29:34 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/27 14:27:14 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/28 18:35:49 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void		run_simulation(t_philo *philos)
 
 	nb_philo = philos[0].nb_philo;
 	philos_pthread = malloc(sizeof(*philos_pthread) * (nb_philo + 1));
-	watcher_pthread = malloc(sizeof(*watcher_pthread) * (nb_philo + 1));
 	launch_philo(philos_pthread, 0, philos);
+	watcher_pthread = malloc(sizeof(*watcher_pthread) * (nb_philo + 1));
 	i = -1;
 	while (++i < nb_philo)
 		pthread_create(&watcher_pthread[i], NULL, watch_death, &philos[i]);
