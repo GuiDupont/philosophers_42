@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:21:32 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/20 15:14:00 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/29 10:04:53 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	*watch_death(void *philo_void)
 		philos = (t_philo*)philo_void;
 		now = get_time_in_milli();
 		diff = now - philos->last_time_eat;
-		if (diff >= philos->time_to_die && philos->nb_time_to_eat != -2)
+		if ((diff >= philos->time_to_die && philos->nb_time_to_eat != -2)
+		|| g_stop != -1)
 		{
 			if (g_stop == -1)
 				print_log(now, philos->id + 1, "died\n", philos);

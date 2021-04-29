@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 13:57:09 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/21 10:24:54 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/29 10:04:27 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ void			*watch_death(void *philo);
 void			run_simulation(t_philo *philos);
 void			*eat_sleep_think(void *philo_void);
 void			free_pthread(pthread_t *p, pthread_t *w, int nb);
-
 
 #endif

@@ -21,7 +21,9 @@ void	launch_philo(int begin, t_philo *philos, int *philos_pid)
 			sem_post(philos->eaten);
 			free_all(philos);
 			free(philos_pid);
-			exit(g_stop);
+			if (g_stop == -2)
+				exit(1);
+			exit(0);
 		}
 		begin += 1;
 	}
@@ -45,10 +47,14 @@ void	run_simulation(t_philo *philos)
 	i = -1;
 	philo_pids = malloc(sizeof(int) * philos->nb_philo);
 	launch_philo(0, philos, philo_pids);
-	wait_eaten(philos->eaten, philos->nb_philo);
+	//wait_eaten(philos->eaten, philos->nb_philo);
 	while (++i < philos->nb_philo)
+	{
 		waitpid(-1, &status, 0);
+		printf("status = %d\n", WEXITSTATUS(status));
+		//if (WEXITSTATUS(status) == 0)
 
+	}
 	free(philo_pids);
 	return ;
 }

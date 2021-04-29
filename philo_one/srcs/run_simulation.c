@@ -6,11 +6,22 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 14:44:55 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/21 10:28:59 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/29 10:05:44 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_42.h"
+
+void		free_pthread(pthread_t *p, pthread_t *w, int nb)
+{
+	int i;
+
+	i = -1;
+	while (++i < nb)
+		pthread_detach(w[i]);
+	free(w);
+	free(p);
+}
 
 static void	launch_philo(pthread_t *philos_pthread, int i, t_philo *philos)
 {
@@ -39,12 +50,11 @@ void		run_simulation(t_philo *philos)
 	launch_philo(philos_pthread, 0, philos);
 	usleep(1000);
 	launch_philo(philos_pthread, 1, philos);
-	i = 0;
-	while (i < nb_philo)
-	{
+	i = -1;
+	while (++i < nb_philo)
 		pthread_create(&watcher_pthread[i], NULL, watch_death, &philos[i]);
+	i = -1;
+	while (++i < nb_philo)
 		pthread_join(philos_pthread[i], NULL);
-		i++;
-	}
 	free_pthread(philos_pthread, watcher_pthread, philos->nb_philo);
 }
