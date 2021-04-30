@@ -6,7 +6,7 @@
 #    By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 11:29:54 by gdupont           #+#    #+#              #
-#    Updated: 2021/04/29 17:36:33 by gdupont          ###   ########.fr        #
+#    Updated: 2021/04/30 14:24:25 by gdupont          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,12 @@ INCLUDES = -pthread
 FFLAGS = -g3 -fsanitize=address
 
 $(NAME) :	$(OBJS) 
-	$(CC) $(DEBUG) $(FLAGS) -g3 $(NOFFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
+	$(CC) $(DEBUG) $(FLAGS) -g3 $(NOFLAGS) $(INCLUDES) $(OBJS) -o $(NAME) 
 
 all : $(NAME)
 
 %.o: %.c
-	@$(CC) -g3 $(DEBUG) $(FLAGS) $(INCLUDES) -o $@ -c $<
+	@$(CC) -g3 $(DEBUG) $(FLAGS) $(NOFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
 	@rm -f $(OBJS)

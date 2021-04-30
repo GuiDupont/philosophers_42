@@ -42,20 +42,18 @@ void	launch_philo(int i, t_philo *philo)
 			pthread_create(&actions, NULL, eat_sleep_think, philo);
 			pthread_create(&watcher, NULL, watch_death, philo);
 			pthread_join(watcher, NULL);
-			// if (g_stop == i)
-			// {
-			// 	sem_post(philo->print);
-			// 	pthread_join(actions, NULL);
-			// 	free_all(philo);
-			// 	//puts("on va partir\n");
-			// 	exit(0);
-			// }
 			if (philo->meals == philo->nb_time_to_eat)
 			{
 				pthread_join(actions, NULL);
 				free_all(philo);
 				exit(1);
 			}
+			exit(0);
+		}
+		else if (philo->pid[i] == -1)
+		{
+			printf("to much philo\n");
+			exit(1);
 		}
 		i += 1;
 	}
@@ -74,7 +72,6 @@ void	waiting(t_philo *philo)
 		if (WEXITSTATUS(status) == 0)
 		{
 			i = -1;
-			printf("about to kill----------\n");
 			while (++i < philo->nb_philo)
 				kill(philo->pid[i], SIGKILL);
 			free_all(philo);
@@ -96,7 +93,7 @@ void	run_simulation(t_philo *philo)
 	i = -1;
 	philo->pid = malloc(sizeof(int) * philo->nb_philo);
 	launch_philo(0, philo);
-	
+	printf("--tout cree\n");
 	pthread_create(&killer, NULL, kill_all, philo);
 	waiting(philo);
 	if (philo->pid)
