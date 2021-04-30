@@ -1,75 +1,127 @@
 #include "../includes/Philosophers_42.h"
 
-void	launch_philo(int begin, t_philo *philos, int *philos_pid)
+void	*kill_all(void *philo_void)
 {
-	pthread_t watcher_death;
-	pthread_t watcher_eaten;
+	int i;
+	t_philo *philo;
+	i = -1;
 
-	if (!g_beginning)
-		g_beginning = get_time_in_milli();
-	while (begin < philos->nb_philo)
-	{
-		philos[begin].last_time_eat = g_beginning;
-		philos_pid[begin] = fork();
-		if (!philos_pid[begin])
-		{
-			launch_watcher(&philos[begin], &watcher_death, &watcher_eaten);
-			eat_sleep_think(&philos[begin]);
-			printf("philos : %d\n", philos[begin].id);
-			pthread_detach(watcher_death);
-			pthread_detach(watcher_eaten);
-			sem_post(philos->eaten);
-			free_all(philos);
-			free(philos_pid);
-			if (g_stop == -2)
-				exit(1);
-			exit(0);
-		}
-		begin += 1;
-	}
-
-}
-
-
-void	*wait_eaten(void *sem_eat, int nb_philos)
-{
-	while (nb_philos--)
-		sem_wait(sem_eat);
+	philo = (t_philo*) philo_void;
+	sem_wait(philo->kill);
+	while (++i < philo->nb_philo)
+		kill(philo->pid[i], SIGKILL);
 	return (NULL);
 }
 
-void	run_simulation(t_philo *philos)
+void pt1(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg)
 {
-	int *philo_pids;
-	int status;
+	pthread_create(thread, attr, start_routine, arg);
+}
+
+
+void pt2(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg)
+{
+	pthread_create(thread, attr, start_routine, arg);
+}
+
+
+void	launch_philo(int i, t_philo *philo)
+{
+	pthread_t actions;
+	pthread_t watcher;
+
+	if (!g_beginning)
+		g_beginning = get_time_in_milli();
+	philo->last_time_eat = g_beginning;
+	while (i < philo->nb_philo)
+	{
+		philo->pid[i] = fork();
+		if (!philo->pid[i])
+		{
+			philo->id = i;
+			pthread_create(&actions, NULL, eat_sleep_think, philo);
+			pthread_create(&watcher, NULL, watch_death, philo);
+			pthread_join(watcher, NULL);
+			// if (g_stop == i)
+			// {
+			// 	sem_post(philo->print);
+			// 	pthread_join(actions, NULL);
+			// 	free_all(philo);
+			// 	//puts("on va partir\n");
+			// 	exit(0);
+			// }
+			if (philo->meals == philo->nb_time_to_eat)
+			{
+				pthread_join(actions, NULL);
+				free_all(philo);
+				exit(1);
+			}
+		}
+		i += 1;
+	}
+
+}
+
+void	waiting(t_philo *philo)
+{
 	int i;
+	int status;
 
 	i = -1;
-	philo_pids = malloc(sizeof(int) * philos->nb_philo);
-	launch_philo(0, philos, philo_pids);
-	//wait_eaten(philos->eaten, philos->nb_philo);
-	while (++i < philos->nb_philo)
+	while (++i < philo->nb_philo)
 	{
 		waitpid(-1, &status, 0);
-		printf("status = %d\n", WEXITSTATUS(status));
-		//if (WEXITSTATUS(status) == 0)
-
+		if (WEXITSTATUS(status) == 0)
+		{
+			i = -1;
+			printf("about to kill----------\n");
+			while (++i < philo->nb_philo)
+				kill(philo->pid[i], SIGKILL);
+			free_all(philo);
+			break ;
+		}
+		if (i == philo->nb_philo && philo->nb_time_to_eat != -1)
+		{
+			sem_wait(philo->print);
+			break ;
+		}
 	}
-	free(philo_pids);
-	return ;
 }
+
+void	run_simulation(t_philo *philo)
+{
+	int i;
+	pthread_t killer;
+
+	i = -1;
+	philo->pid = malloc(sizeof(int) * philo->nb_philo);
+	launch_philo(0, philo);
+	
+	pthread_create(&killer, NULL, kill_all, philo);
+	waiting(philo);
+	if (philo->pid)
+	{
+		i = -1;
+		while (++i < philo->nb_philo)
+			kill(philo->pid[i], SIGTERM);
+		free(philo->pid);
+		philo->pid = NULL;
+	}
+	free_all(philo);
+	pthread_detach(killer);
+
+}
+
 
 int main(int ac, char **av)
 {
-	t_philo	*philos;
+	t_philo	philo;
 
 	if (ac != 5 && ac != 6)
 		return (1);
-	philos = set_up_philos(av);
-	if (!philos)
-		return (1);
+	set_up_philos(&philo, av);
 	g_stop = -1;
-	run_simulation(philos);
-	free_all(philos);
+	run_simulation(&philo);
+	free_all(&philo);
 	return (0);
 }

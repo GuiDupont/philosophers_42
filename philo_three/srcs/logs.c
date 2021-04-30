@@ -35,6 +35,8 @@ void    print_log(unsigned long timestamp, int id, char *log, t_philo *p)
     int     index;
 
     timestamp -= g_beginning;
+	if (g_stop != -1)
+		return ;
 	sem_wait(p->print);
     index = ft_itoa_on_buffer(timestamp, str);
     index++;

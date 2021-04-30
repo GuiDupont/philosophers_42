@@ -19,14 +19,14 @@ long long		g_beginning;
 # define FORK_SEM "/forks"
 # define PRINT_SEM "/print"
 # define TAKING_SEM "/taking"
-# define STOP_SEM "/stop"
-# define EATEN_SEM "/eaten"
 
 typedef struct	s_philo
 {
 	int				id;
 	int				nb_philo;
 	int				nb_time_to_eat;
+	int				meals;
+	pid_t			*pid;
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			time_to_die;
@@ -34,8 +34,7 @@ typedef struct	s_philo
 	sem_t			*taking_fork;
 	sem_t			*forks;
 	sem_t			*print;
-	sem_t			*eaten;
-	sem_t			*stop;
+	sem_t			*kill;
 }				t_philo;
 
 long long		tv_to_milli(struct timeval *tv);
@@ -51,7 +50,7 @@ char			*ft_strcpy(char *dest, char *src);
 int				ft_strlen(const char *str);
 int				ft_atoi(const char *str);
 
-t_philo			*set_up_philos(char **av);
+void			set_up_philos(t_philo *philo, char **av);
 
 int				launch_watcher(t_philo *philos, pthread_t *watcher, pthread_t *eat);
 void			*watch_death(void *philo);

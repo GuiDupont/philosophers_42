@@ -13,28 +13,28 @@ void	eat(t_philo *philo)
 	precise_sleep(philo->time_to_eat);
 	sem_post(philo->forks);
 	sem_post(philo->forks);
-	
+	if (g_stop != -1)
+			return ;	
 }
 
 void 	*eat_sleep_think(void *philo_void)
 {
 	t_philo	*philo;
-	int		i;
 
 	philo = (t_philo*)philo_void;
-	i = 0;
 	philo->last_time_eat = g_beginning;
-	while (i != philo->nb_time_to_eat && g_stop == -1)
+	philo->meals = 0;
+	while (philo->meals != philo->nb_time_to_eat && g_stop == -1)
 	{
 		eat(philo);
 		print_log(get_time_in_milli(), philo->id + 1, "is sleeping\n", philo);
+		if (g_stop != -1)
+			break;
 		precise_sleep(philo->time_to_sleep);
 		print_log(get_time_in_milli(), philo->id + 1, "is thinking\n", philo);
-		i++;
+		philo->meals++;
 	}
-	//printf("hello 1 from philo\n");
-
-	philo->nb_time_to_eat = -2;
-	//printf("hello 2 from philo\n");
+	if (g_stop == -1)
+		g_stop = -2;
 	return (NULL);
 }
