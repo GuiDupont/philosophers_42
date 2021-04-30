@@ -1,13 +1,27 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers_42.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/30 15:05:30 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/30 15:44:26 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/philosophers_42.h"
 
 void	*kill_all(void *philo_void)
 {
-	int i;
+	int		i;
 	t_philo *philo;
-	i = -1;
 
-	philo = (t_philo*) philo_void;
+	i = -1;
+	philo = (t_philo*)philo_void;
 	sem_wait(philo->kill);
+	// if (g_stop == -2)
+	// 	return (NULL);
 	g_stop = -2;
 	while (++i < philo->nb_philo)
 		kill(philo->pid[i], SIGKILL);
@@ -70,7 +84,7 @@ void	waiting(t_philo *philo)
 			sem_wait(philo->print);
 			break ;
 		}
-	}
+	 }
 }
 
 void	run_simulation(t_philo *philo)
@@ -83,12 +97,13 @@ void	run_simulation(t_philo *philo)
 	waiting(philo);
 	if (g_stop == -1)
 		sem_post(philo->kill);
+	pthread_join(killer, NULL);
 	free_all(philo);
-	pthread_detach(killer);
+
 }
 
 
-int main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_philo	philo;
 

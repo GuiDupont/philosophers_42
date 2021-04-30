@@ -1,6 +1,18 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/30 15:05:09 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/30 15:22:32 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static	int 	check_arg(char **av)
+#include "../includes/philosophers_42.h"
+
+static	int	check_arg(char **av)
 {
 	int i;
 	int y;
@@ -28,35 +40,29 @@ static	int 	check_arg(char **av)
 	return (1);
 }
 
-void	fill_philos_data(char **av, t_philo *philos)
+void		fill_philos_data(char **av, t_philo *p)
 {
-	philos->last_time_eat = 0;
-	philos->nb_philo = ft_atoi(av[1]);
-	philos->time_to_eat = ft_atoi(av[3]);
-	philos->time_to_sleep = ft_atoi(av[4]);
-	philos->time_to_die = ft_atoi(av[2]);
+	p->last_time_eat = 0;
+	p->nb_philo = ft_atoi(av[1]);
+	p->time_to_eat = ft_atoi(av[3]);
+	p->time_to_sleep = ft_atoi(av[4]);
+	p->time_to_die = ft_atoi(av[2]);
 	if (av[5])
-		philos->nb_time_to_eat = ft_atoi(av[5]);
+		p->nb_time_to_eat = ft_atoi(av[5]);
 	else
-		philos->nb_time_to_eat = -1;
-	philos->pid = NULL;
-	
-}
-
-void set_up_sem(int nb_philo, t_philo *p)
-{
+		p->nb_time_to_eat = -1;
+	p->pid = NULL;
 	sem_unlink(FORK_SEM);
 	sem_unlink(PRINT_SEM);
 	sem_unlink(TAKING_SEM);
-	sem_unlink("/kill");
-	p->forks = sem_open(FORK_SEM, O_CREAT | S_IRWXU, 0644, nb_philo);
+	sem_unlink(KILL_SEM);
+	p->forks = sem_open(FORK_SEM, O_CREAT | S_IRWXU, 0644, p->nb_philo);
 	p->print = sem_open(PRINT_SEM, O_CREAT | S_IRWXU, 0644, 1);
 	p->taking_fork = sem_open(TAKING_SEM, O_CREAT | S_IRWXU, 0644, 1);
-	p->kill = sem_open("/kill", O_CREAT | S_IRWXU, 0644, 0);
-
+	p->kill = sem_open(KILL_SEM, O_CREAT | S_IRWXU, 0644, 0);
 }
 
-void	free_all(t_philo *p)
+void		free_all(t_philo *p)
 {
 	sem_close(p->forks);
 	sem_unlink(FORK_SEM);
@@ -65,18 +71,17 @@ void	free_all(t_philo *p)
 	sem_close(p->taking_fork);
 	sem_unlink(TAKING_SEM);
 	sem_close(p->kill);
-	sem_unlink("/kill");
+	sem_unlink(KILL_SEM);
 	free(p->pid);
 	p->pid = NULL;
 }
 
-void	set_up_philos(t_philo *philo, char **av)
+void		set_up_philos(t_philo *philo, char **av)
 {
-
 	if (!check_arg(av))
 		return ;
-    set_up_sem(atoi(av[1]), philo);
-	if (!philo->forks | !philo->print | !philo->taking_fork)
-		ft_exit("Can't allocate memory or setup sem properly\n");
 	fill_philos_data(av, philo);
+	if (!philo->forks | !philo->print | !philo->taking_fork ||
+	!philo->kill)
+		ft_exit("Can't allocate memory or setup sem properly\n");
 }

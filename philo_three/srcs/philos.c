@@ -1,4 +1,16 @@
-#include "../includes/Philosophers_42.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philos.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/30 15:05:42 by gdupont           #+#    #+#             */
+/*   Updated: 2021/04/30 15:12:31 by gdupont          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/philosophers_42.h"
 
 void	eat(t_philo *philo)
 {
@@ -17,7 +29,7 @@ void	eat(t_philo *philo)
 			return ;	
 }
 
-void 	*eat_sleep_think(void *philo_void)
+void	*eat_sleep_think(void *philo_void)
 {
 	t_philo	*philo;
 
