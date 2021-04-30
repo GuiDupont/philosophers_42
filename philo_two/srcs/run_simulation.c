@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 16:29:34 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/28 18:35:49 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/04/30 15:56:34 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	free_pthread(pthread_t *p, pthread_t *w, int nb)
 	i = 0;
 	while (i < nb)
 	{
-		pthread_detach(w[i]);
+		pthread_join(w[i], NULL);
 		i++;
 	}
 	free(w);
@@ -65,6 +65,7 @@ void		run_simulation(t_philo *philos)
 	i = -1;
 	while (++i < nb_philo)
 		pthread_join(philos_pthread[i], NULL);
+	g_stop = -2;
 	free_pthread(philos_pthread, watcher_pthread, philos->nb_philo);
 	free_all(philos);
 }
