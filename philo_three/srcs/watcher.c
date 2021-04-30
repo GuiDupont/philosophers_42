@@ -1,18 +1,5 @@
 #include "../includes/Philosophers_42.h"
 
-// void	*watch_eaten(void *philos)
-// {
-// 	t_philo *philo;
-	
-// 	philo = (t_philo*)philos;
-// 	sem_wait(philo->stop);
-// 	if (g_stop == -1)
-// 		g_stop = -2;
-// 	sem_wait(philo->print);
-// 	sem_post(philo->print);
-// 	return (NULL);
-// }
-
 void	*watch_death(void *philo_void)
 {
 	t_philo		*philo;

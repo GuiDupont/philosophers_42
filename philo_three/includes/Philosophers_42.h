@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 int				g_stop;
 long long		g_beginning;
