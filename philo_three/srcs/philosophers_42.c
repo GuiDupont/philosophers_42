@@ -8,22 +8,11 @@ void	*kill_all(void *philo_void)
 
 	philo = (t_philo*) philo_void;
 	sem_wait(philo->kill);
+	g_stop = -2;
 	while (++i < philo->nb_philo)
 		kill(philo->pid[i], SIGKILL);
 	return (NULL);
 }
-
-void pt1(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg)
-{
-	pthread_create(thread, attr, start_routine, arg);
-}
-
-
-void pt2(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg)
-{
-	pthread_create(thread, attr, start_routine, arg);
-}
-
 
 void	launch_philo(int i, t_philo *philo)
 {
@@ -52,12 +41,11 @@ void	launch_philo(int i, t_philo *philo)
 		}
 		else if (philo->pid[i] == -1)
 		{
-			printf("to much philo\n");
+			printf("Could not fork\n");
 			exit(1);
 		}
 		i += 1;
 	}
-
 }
 
 void	waiting(t_philo *philo)
@@ -87,26 +75,16 @@ void	waiting(t_philo *philo)
 
 void	run_simulation(t_philo *philo)
 {
-	int i;
 	pthread_t killer;
 
-	i = -1;
 	philo->pid = malloc(sizeof(int) * philo->nb_philo);
 	launch_philo(0, philo);
-	printf("--tout cree\n");
 	pthread_create(&killer, NULL, kill_all, philo);
 	waiting(philo);
-	if (philo->pid)
-	{
-		i = -1;
-		while (++i < philo->nb_philo)
-			kill(philo->pid[i], SIGTERM);
-		free(philo->pid);
-		philo->pid = NULL;
-	}
+	if (g_stop == -1)
+		sem_post(philo->kill);
 	free_all(philo);
 	pthread_detach(killer);
-
 }
 
 

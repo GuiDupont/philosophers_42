@@ -16,7 +16,8 @@ void	*watch_death(void *philo_void)
 
 			sem_wait(philo->print);
 			g_stop = philo->id;	
-			printf("%lld %d has died\n", get_time_in_milli() - g_beginning, philo->id);
+			printf("%lld %d died\n", get_time_in_milli()
+			 - g_beginning, philo->id);
 			sem_post(philo->kill);
 			return (NULL) ;
 		}
