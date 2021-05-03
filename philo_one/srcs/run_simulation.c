@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 14:44:55 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/29 10:05:44 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/05/03 11:34:46 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ void		free_pthread(pthread_t *p, pthread_t *w, int nb)
 	int i;
 
 	i = -1;
+	g_stop = -2;
 	while (++i < nb)
-		pthread_detach(w[i]);
+		pthread_join(w[i], NULL);
 	free(w);
 	free(p);
 }

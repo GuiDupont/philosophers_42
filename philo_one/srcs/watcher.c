@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:21:32 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/29 10:04:53 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/05/03 11:32:12 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*watch_death(void *philo_void)
 	long long	diff;
 	long long	now;
 
-	while (1)
+	while (g_stop == -1)
 	{
 		philos = (t_philo*)philo_void;
 		now = get_time_in_milli();

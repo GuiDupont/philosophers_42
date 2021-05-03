@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:03:32 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/29 09:37:36 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/05/03 11:35:55 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void		print_log(long long time, int id, char *log, t_philo *phi)
 	index++;
 	str[index++] = ' ';
 	ft_strcpy(&str[index], log);
-	write(1, str, ft_strlen(str));
+	if (g_stop == -1)
+		write(1, str, ft_strlen(str));
 	pthread_mutex_unlock(phi->print);
 }
