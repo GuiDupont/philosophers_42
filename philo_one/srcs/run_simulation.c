@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/20 14:44:55 by gdupont           #+#    #+#             */
-/*   Updated: 2021/05/03 11:34:46 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/05/03 12:09:40 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void		run_simulation(t_philo *philos)
 	if (!philos_pthread || !watcher_pthread)
 		return (free_pthread(philos_pthread, watcher_pthread, 0));
 	launch_philo(philos_pthread, 0, philos);
-	usleep(1000);
+	if (philos->nb_philo % 2 == 0)
+		usleep(1000);
 	launch_philo(philos_pthread, 1, philos);
 	i = -1;
 	while (++i < nb_philo)

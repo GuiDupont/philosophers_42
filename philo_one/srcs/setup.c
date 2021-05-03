@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:14:59 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/21 10:35:48 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/05/03 12:08:26 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ static	void	fill_philos_data(char **av, t_philo *philos, int i)
 		philos->nb_time_to_eat = ft_atoi(av[5]);
 	else
 		philos->nb_time_to_eat = -1;
+	if (philos->nb_philo % 2 && philos->id == philos->nb_philo - 1)
+		ft_swap(&philos->min_fork, &philos->max_fork);
+	if (philos->nb_philo % 2 && philos->id % 2)
+		ft_swap(&philos->min_fork, &philos->max_fork);
 }
 
 static	void	free_all(t_philo *p, pthread_mutex_t *f, pthread_mutex_t *pr)
