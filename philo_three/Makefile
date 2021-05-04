@@ -6,7 +6,7 @@
 #    By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 11:29:54 by gdupont           #+#    #+#              #
-#    Updated: 2021/05/04 10:32:16 by gdupont          ###   ########.fr        #
+#    Updated: 2021/05/04 10:52:28 by gdupont          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ DEBUG = -g
 
 PATH_SRCS = srcs
 
-SRCS_LIST = philosophers_42.c tools.c logs.c time.c setup.c philos.c watcher.c \
+SRCS_LIST = main.c tools.c logs.c time.c setup.c philos.c watcher.c \
 			run_simulation.c
 			
 					

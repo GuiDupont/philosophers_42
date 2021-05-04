@@ -6,7 +6,7 @@
 /*   By: gdupont <gdupont@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:12:14 by gdupont           #+#    #+#             */
-/*   Updated: 2021/04/28 19:51:00 by gdupont          ###   ########.fr       */
+/*   Updated: 2021/05/04 11:37:05 by gdupont          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		free_n_exit(t_philo *philos, int exit_value)
 	free(philos->forks);
 	free(philos->print);
 	free(philos);
-	printf("coucou\n");
 	return (exit_value);
 }
 
